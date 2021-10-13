@@ -1,0 +1,49 @@
+[
+    {
+        "display_name": "Dashboard",
+        "route": "/",
+        "icon": "bx bx-category-alt"
+    },
+    {
+        "display_name": "Товары",
+        "route": "/products",
+        "icon": "bx bx-package"
+    },
+    {
+        "display_name": "Категории",
+        "route": "/categories",
+        "icon": "bx bx-list-ol"
+    },
+    {
+        "display_name": "Магазины",
+        "route": "/brands",
+        "icon": "bx bx-store-alt"
+    },
+    {
+        "display_name": "Видео",
+        "route": "/video",
+        "icon": "bx bx-video"
+    },
+    {
+        "display_name": "Уроки",
+        "route": "/tutorials",
+        "icon": "bx bx-run"
+    },
+    {
+        "display_name": "Заказы (товары)",
+        "route": "/orders",
+        "icon": "bx bx-cart"
+    },
+    {
+        "display_name": "Заказы (курсы)",
+        "route": "/courseOrders",
+        "icon": "bx bx-cart"
+    },
+    {
+        "display_name": "Реклама",
+        "route": "/ads",
+        "icon": "bx bx-barcode-reader"
+    }
+]
+
+    

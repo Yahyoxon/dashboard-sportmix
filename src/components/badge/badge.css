@@ -1,0 +1,56 @@
+.badge {
+    padding: 6px 11px;
+    color: var(--txt-white);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+.badge-btn {
+    padding: 10px 15px;
+    color: var(--txt-white);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.badge-danger {
+    background-color: var(--main-color-red);
+}
+
+.badge-success {
+    background-color: var(--main-color-green);
+}
+
+.badge-primary {
+    background-color: var(--main-color-blue);
+}
+
+.badge-warning {
+    background-color: var(--main-color-orange);
+}
+
+/* order types */
+.badge-new {
+    color: var(--txt-color-light);
+    background-color: var(--txt-white);
+}
+.badge-accepted {
+    background-color: var(--second-color-orange);
+}
+.badge-waiting {
+    background-color: var(--main-color-orange);
+}
+.badge-canceled {
+    background-color: var(--main-color-red);
+}
+.badge-purchased {
+    background-color: var(--second-color-green);
+}
+/* installment types */
+.badge-all {
+    background-color: var(--second-color-green);
+}
+.badge-order {
+    background-color: var(--second-color-orange);
+}
+.badge-none {
+    background-color: var(--main-color-red);
+}
