@@ -94,7 +94,7 @@ const Routes = () => {
         <>
             <Switch>
                 <Route exact path='/'>
-                    <Dashboard brands={brands} />
+                    <Dashboard brands={brands} categories={categories} brands={brands} />
                 </Route>
                 <Route path='/profile'>
                     <Profile />

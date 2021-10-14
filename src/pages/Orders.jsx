@@ -95,7 +95,7 @@ const Orders = (props) => {
     }, [searchOrder, statusForSearch])
 
     //delete
-    const deleteProduct = async (id, name) => {
+    const deleteOrder = async (id, name) => {
         const confirm = window.confirm(`Do you really want to delete ${name}?`);
         if (confirm === true) {
             await axios.delete(`https://api.sport-mix.uz/api/order/delete`, {
@@ -161,7 +161,7 @@ const Orders = (props) => {
 
             </td>
             {/* <td>
-                <button className="badge-btn badge-danger bx bx-trash" onClick={() => { deleteProduct(order.order_id, order.product) }}></button>
+                <button className="badge-btn badge-danger bx bx-trash" onClick={() => { deleteOrder(order.order_id, order.product) }}></button>
             </td> */}
 
         </tr>

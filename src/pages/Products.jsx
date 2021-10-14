@@ -138,8 +138,7 @@ const Products = (props) => {
                     <button className="badge-btn badge-primary bx bx-edit editBtnMargin"></button>
                 </Link>
                 <button title="Удалить" className="badge-btn badge-danger bx bx-trash" onClick={() => { deleteProduct(item.id, item.name) }}></button>
-                <button title="Заказать" className="badge-btn badge-warning bx bx-shopping-bag" onClick={() => { orderProduct(item.name, "test", "+000000000000", "buxoro", 5, item.brand_name, item.images[0], item.price) }}></button>
-                {console.log(item)}
+                {/* <button title="Заказать" className="badge-btn badge-warning bx bx-shopping-bag" onClick={() => { orderProduct(item.name, "test", "+000000000000", "buxoro", 5, item.brand_name, item.images[0], item.price) }}></button> */}
             </td>
         </tr>
     )
