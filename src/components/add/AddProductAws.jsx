@@ -58,7 +58,7 @@ const AddProduct = (props) => {
         e.preventDefault()
         if (isImageUploaded) {
             setIsUpload(true)
-            images.map(perImage => {
+            images.map((perImage) => (
                 S3FileUpload.uploadFile(perImage, config)
                     .then((data) => {
                         setUrls((prevState) => [...prevState, data.location])
@@ -66,7 +66,8 @@ const AddProduct = (props) => {
                     .catch((err) => {
                         console.log(err)
                     })
-            })
+
+            ))
 
         }
         else {
@@ -76,38 +77,37 @@ const AddProduct = (props) => {
 
     }
 
-    const addProduct = () => {
-        if (urls.length === images.length) {
-            axios.post(`https://api.sport-mix.uz/api/products/create`,
-                {
-                    "name": name,
-                    "description": description,
-                    "price": price,
-                    "category_name": category_name,
-                    "brand_name": brand_name,
-                    "installment": installment,
-                    "images": urls
-                })
-                .then((res) => {
-                    if (res.data === true) {
-                        // window.location = "/products"
-                        history.goBack();
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        }
-        else {
-            // console.log("I got an error")
-            setIsUpload(false)
-            return null
-        }
-    }
 
     useEffect(() => {
+        function addProduct() {
+            if (urls.length === images.length) {
+                axios.post(`https://api.sport-mix.uz/api/products/create`,
+                    {
+                        "name": name,
+                        "description": description,
+                        "price": price,
+                        "category_name": category_name,
+                        "brand_name": brand_name,
+                        "installment": installment,
+                        "images": urls
+                    })
+                    .then((res) => {
+                        if (res.data === true) {
+                            // window.location = "/products"
+                            history.goBack();
+                        } else {
+                            console.log(res);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            else {
+                setIsUpload(false)
+                return null
+            }
+        };
         addProduct()
     }, [urls])
 

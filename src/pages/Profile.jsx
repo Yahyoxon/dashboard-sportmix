@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+// import React, { useState, useEffect } from 'react'
 // import { Link } from 'react-router-dom'
 import axios from 'axios'
 // import md5 from 'md5'
@@ -19,6 +20,7 @@ const Profile = () => {
 
 
     const handleChangeImage = () => {
+        setIsUpload(false)
         console.log("image changed");
     }
 

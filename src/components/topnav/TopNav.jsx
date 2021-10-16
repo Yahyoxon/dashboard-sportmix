@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+// import React, { useState, useEffect } from 'react'
 import './topnav.css'
 import { Link } from 'react-router-dom'
 import Dropdown from '../dropdown/Dropdown'
@@ -96,7 +97,7 @@ const Topnav = () => {
                                     <span>Profile</span>
                                 </div>
                             </Link>
-                            <div style={{cursor:"pointer"}} onClick={logOut}>
+                            <div style={{ cursor: "pointer" }} onClick={logOut}>
                                 <div className="notification-item">
                                     <i className="bx bx-log-out-circle bx-rotate-180"></i>
                                     <span>Logout</span>

@@ -12,16 +12,6 @@ const Orders = (props) => {
     const [error, setError] = useState("");
     const [ordersCount, setOrdersCount] = useState(0);
 
-    //number formatter
-    const numFormatter = (num) => {
-        if (num > 999 && num < 1000000) {
-            return (num / 1000).toFixed(1) + 'K';
-        } else if (num > 1000000) {
-            return (num / 1000000).toFixed(1) + 'M';
-        } else if (num < 900) {
-            return num;
-        }
-    }
     //short string
     const shortString = (str, n) => {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
@@ -71,40 +61,43 @@ const Orders = (props) => {
     ];
     //set Status
     const setStatus = async (status, order_id) => {
-        const response = await axios.put(`https://api.sport-mix.uz/api/order/setStatus`,
+        await axios.put(`https://api.sport-mix.uz/api/order/setStatus`,
             {
                 "status": status,
                 "order_id": order_id
             }
         )
-        getOrdersData(searchOrder)
+        // getOrdersData(searchOrder)
     }
-    // //search order
-    async function getOrdersData(findOrder) {
-        const response = await axios.post('https://api.sport-mix.uz/api/order/readFromOrderStatus', { "status": statusForSearch, "o_id": findOrder })
-        if (response.data.message) {
-            setError(response.data.message)
-            setOrders([])
-        } else {
-            setError("")
-            setOrders(response.data.reverse())
-        }
-    }
+
     useEffect(() => {
+        // //search order
+        async function getOrdersData(findOrder) {
+            const response = await axios.post('https://api.sport-mix.uz/api/order/readFromOrderStatus', { "status": statusForSearch, "o_id": findOrder })
+            if (response.data.message) {
+                setError(response.data.message)
+                setOrders([])
+            } else {
+                setError("")
+                setOrders(response.data.reverse())
+            }
+        }
         getOrdersData(searchOrder)
+        setOrders([])
+        setError("")
     }, [searchOrder, statusForSearch])
 
     //delete
-    const deleteOrder = async (id, name) => {
-        const confirm = window.confirm(`Do you really want to delete ${name}?`);
-        if (confirm === true) {
-            await axios.delete(`https://api.sport-mix.uz/api/order/delete`, {
-                headers: { "Content-Type": "application/json" },
-                data: { "order_id": id }
-            });
-            await getOrdersData(searchOrder)
-        }
-    }
+    // const deleteOrder = async (id, name) => {
+    //     const confirm = window.confirm(`Do you really want to delete ${name}?`);
+    //     if (confirm === true) {
+    //         await axios.delete(`https://api.sport-mix.uz/api/order/delete`, {
+    //             headers: { "Content-Type": "application/json" },
+    //             data: { "order_id": id }
+    //         });
+    //         await getOrdersData(searchOrder)
+    //     }
+    // }
 
     // getCount
     const getCount = async (status) => {
@@ -113,6 +106,7 @@ const Orders = (props) => {
     }
     useEffect(() => {
         getCount(statusThumb)
+        setOrdersCount(0)
     }, [statusThumb])
 
     //set Thumb Status

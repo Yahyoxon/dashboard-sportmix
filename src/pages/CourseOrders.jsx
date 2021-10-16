@@ -3,7 +3,7 @@ import Table from '../components/table/Table'
 import axios from "axios";
 
 const CourseOrders = () => {
-    
+
     const shortString = (str, n) => {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
     };
@@ -147,6 +147,8 @@ const CourseOrders = () => {
     }
     useEffect(() => {
         getFoundOrder(searchOrder)
+        setFoundOrders([])
+        setError("")
     }, [searchOrder])
 
     return (

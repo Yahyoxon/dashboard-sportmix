@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import Table from '../components/table/Table'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 
-const Ads = (props) => {
+const Ads = () => {
 
     const [ads, setAds] = useState([])
 
@@ -21,6 +20,7 @@ const Ads = (props) => {
     }
     useEffect(() => {
         getAds()
+        setAds([])
     }, [])
 
 
@@ -40,28 +40,8 @@ const Ads = (props) => {
 
     }
 
-    const customerTableHead = [
-        '№',
-        'Название',
-        'Видео',
-        'Изменить',
-        'Удалить'
-    ]
-    const renderHead = (item, index) => <th key={index}>{item}</th>
 
-    const renderBody = (item, index) => (
-        <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{item.name}</td>
-            <td> <video className="borderRadius" src={item.video} controls /></td>
-            <td>
-                <Link to={`/ads/edit-brand/${item.id}`}>
-                    <button className="badge-btn badge-primary">Изменить</button>
-                </Link>
-            </td>
-            <td><button className="badge-btn badge-danger " onClick={() => { deleteCategory(item.id, item.name) }}>Удалить</button></td>
-        </tr>
-    )
+
     return (
         <div>
             <div className="tableHeader">

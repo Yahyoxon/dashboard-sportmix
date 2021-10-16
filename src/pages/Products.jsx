@@ -25,6 +25,7 @@ const Products = (props) => {
     }
     useEffect(() => {
         getProducts(brand_name)
+        setProducts([])
     }, [brand_name])
 
 
@@ -61,19 +62,19 @@ const Products = (props) => {
 
     }
     //order product
-    const orderProduct = async (product, username, phone, region, quantity, brand_name, image, total_price) => {
-        const res = await axios.post(`https://api.sport-mix.uz/api/order/create`, {
-            "product": product,
-            "username": username,
-            "phone": phone,
-            "region": region,
-            "quantity": quantity,
-            "brand_name": brand_name,
-            "image": image,
-            "total_price": total_price
-        });
-        console.log(res.data);
-    }
+    // const orderProduct = async (product, username, phone, region, quantity, brand_name, image, total_price) => {
+    //     const res = await axios.post(`https://api.sport-mix.uz/api/order/create`, {
+    //         "product": product,
+    //         "username": username,
+    //         "phone": phone,
+    //         "region": region,
+    //         "quantity": quantity,
+    //         "brand_name": brand_name,
+    //         "image": image,
+    //         "total_price": total_price
+    //     });
+    //     console.log(res.data);
+    // }
 
     const setInstallment = async (installment, id) => {
         const response = await axios.put(`https://api.sport-mix.uz/api/products/setInstallment`,

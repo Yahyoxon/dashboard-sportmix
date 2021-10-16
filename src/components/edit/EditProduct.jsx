@@ -6,7 +6,7 @@ import { uploadFile, deleteFile } from 'react-s3'
 import uploadImg from '../../assets/images/photo (1).png'
 
 
-const AddProduct = (props) => {
+const EditProduct = (props) => {
     const { id } = useParams();
     const history = useHistory();
 
@@ -66,7 +66,7 @@ const AddProduct = (props) => {
         if (~index) {
             images.splice(index, 1);
             deleteFile(image.split("/")[4], config)
-                .then(response => console.log(response))
+                .then(response => console.log(`${response.message} : ${response.fileName}`))
                 .catch(err => console.error(err))
         }
     }
@@ -83,6 +83,7 @@ const AddProduct = (props) => {
                     .catch((err) => {
                         console.log(err)
                     })
+                return perImage;
             })
         }
 
@@ -112,6 +113,7 @@ const AddProduct = (props) => {
         }
     }
 
+
     const addProduct = () => {
 
         if (newImages.length + images.length === [...newUrl, ...images].length) {
@@ -129,8 +131,6 @@ const AddProduct = (props) => {
                 .then((res) => {
                     if (res.data === true) {
                         history.goBack();
-                    } else {
-                        // console.log(res);
                     }
                 })
                 .catch((error) => {
@@ -143,11 +143,6 @@ const AddProduct = (props) => {
         }
 
     }
-
-    // useEffect(() => {
-    //     addProduct()
-    // }, [])
-
     useEffect(() => {
         addProduct()
     }, [newUrl])
@@ -258,7 +253,7 @@ const AddProduct = (props) => {
         </div>
     )
 }
-export default AddProduct
+export default EditProduct
 
 
 

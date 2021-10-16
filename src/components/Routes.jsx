@@ -44,6 +44,7 @@ const Routes = () => {
     }
     useEffect(() => {
         getVideos()
+        setVideos([])
     }, [])
     //products
     async function getProducts() {
@@ -57,6 +58,7 @@ const Routes = () => {
     }
     useEffect(() => {
         getProducts()
+        setProducts([])
     }, [])
     //categories
     async function getCategories() {
@@ -72,6 +74,7 @@ const Routes = () => {
     }
     useEffect(() => {
         getCategories()
+        setCategories([])
     }, [])
     //brands
     async function getBrands() {
@@ -86,7 +89,8 @@ const Routes = () => {
 
     }
     useEffect(() => {
-        getBrands()
+        getBrands();
+        setBrands([]);
     }, [])
 
 
@@ -94,7 +98,7 @@ const Routes = () => {
         <>
             <Switch>
                 <Route exact path='/'>
-                    <Dashboard brands={brands} categories={categories} brands={brands} />
+                    <Dashboard brands={brands} categories={categories} />
                 </Route>
                 <Route path='/profile'>
                     <Profile />

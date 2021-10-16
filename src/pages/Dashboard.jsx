@@ -6,6 +6,7 @@ import StatusCard from '../components/status-card/StatusCard'
 import Table from '../components/table/Table'
 import Badge from '../components/badge/Badge'
 import axios from "axios";
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 
 const Dashboard = (props) => {
 
@@ -44,6 +45,20 @@ const Dashboard = (props) => {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
     };
 
+    // useEffect(() => {
+    //     (async () => {
+    //         const response = await axios.post('https://api.sport-mix.uz/api/analytics/getBrandsCount')
+    //         setBrandsCount(response.data)
+    //     })()
+    // }, [])
+    // //categories count
+    // useEffect(() => {
+    //     setTimeout(async () => {
+    //         const response = await axios.post('https://api.sport-mix.uz/api/analytics/getCategoriesCount')
+    //         setCategoriesCount(response.data)
+    //     }, 0);
+    // }, [])
+
     //brands count
     async function getBrandsCount() {
         const response = await axios.post('https://api.sport-mix.uz/api/analytics/getBrandsCount')
@@ -51,6 +66,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getBrandsCount()
+        setBrandsCount([])
     }, [])
     //categories count
     async function getCategoriesCount() {
@@ -59,6 +75,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getCategoriesCount()
+        setCategoriesCount([])
     }, [])
     //videos count
     async function getVideosCount() {
@@ -67,6 +84,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getVideosCount()
+        setVideosCount([])
     }, [])
     //products count
     async function getProductsCount() {
@@ -75,6 +93,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getProductsCount()
+        setProductsCount([])
     }, [])
     //pending orders count
     async function getPendingOrders() {
@@ -83,6 +102,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getPendingOrders()
+        PendingOrdersCount([])
     }, [])
     //orders
     async function getOrdersData() {
@@ -96,6 +116,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getOrdersData()
+        setOrders([])
     }, [])
     //favorite products
     async function getFavoriteProducts() {
@@ -109,6 +130,7 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getFavoriteProducts()
+        setFavoriteProducts([])
     }, [])
     //video views
     async function getViewsForChart() {
@@ -130,6 +152,8 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getViewsForChart()
+        setVideoViews([])
+        setVideoDate([])
     }, [])
     //orders region
     async function getOrdersRegionChart() {
@@ -151,6 +175,8 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getOrdersRegionChart()
+        setOrdersRegion([])
+        setOrdersCountFromRegion([])
     }, [])
     //orders count per day
     async function getOrdersForChart() {
@@ -171,8 +197,9 @@ const Dashboard = (props) => {
     }
     useEffect(() => {
         getOrdersForChart()
+        setOrderViews([])
+        setOrderDate([])
     }, [])
-
 
     //shop chart
     const shopStatusCards = [
@@ -201,8 +228,6 @@ const Dashboard = (props) => {
             "title": pendingOrdersCount.title
         }
     ]
-
-
 
     //video chart
     const videoStatusCards = [
@@ -299,32 +324,32 @@ const Dashboard = (props) => {
             }
         }
     }
-    const orderStatusCards = [
-        {
-            "icon": "bx bx-time",
-            "count": pendingOrdersCount.count,
-            "link": "orders",
-            "title": pendingOrdersCount.title
-        },
-        {
-            "icon": "bx bx-video",
-            "count": videosCount.count,
-            "link": "video",
-            "title": videosCount.title
-        },
-        {
-            "icon": "bx bx-cart",
-            "count": productsCount.count,
-            "link": "products",
-            "title": productsCount.title
-        },
-        {
-            "icon": "bx bx-cart",
-            "count": productsCount.count,
-            "link": "products",
-            "title": productsCount.title
-        }
-    ]
+    // const orderStatusCards = [
+    //     {
+    //         "icon": "bx bx-time",
+    //         "count": pendingOrdersCount.count,
+    //         "link": "orders",
+    //         "title": pendingOrdersCount.title
+    //     },
+    //     {
+    //         "icon": "bx bx-video",
+    //         "count": videosCount.count,
+    //         "link": "video",
+    //         "title": videosCount.title
+    //     },
+    //     {
+    //         "icon": "bx bx-cart",
+    //         "count": productsCount.count,
+    //         "link": "products",
+    //         "title": productsCount.title
+    //     },
+    //     {
+    //         "icon": "bx bx-cart",
+    //         "count": productsCount.count,
+    //         "link": "products",
+    //         "title": productsCount.title
+    //     }
+    // ]
 
     //regions chart
     const chartOptionsRegion = {
@@ -419,6 +444,11 @@ const Dashboard = (props) => {
         </tr>
     )
 
+    const Box = ({ children }) => (
+        < div className='status-card-without-padding' >
+            {children}
+        </div >
+    );
 
     return (
         <div>
@@ -430,21 +460,87 @@ const Dashboard = (props) => {
                 </div>
                 <div className="col-5">
                     <div className="row">
+                        {/* example 1 */}
+                        {/* <div className="col-6">
+                            <Link to="/brands" >
+                                <div className='status-card'>
+                                    <div className="status-card__icon">
+                                        <i className="bx bx-shopping-bag"></i>
+                                    </div>
+                                    <div className="status-card__info">
+                                        <h4>
+                                            {brandsCount.count && <div>{brandsCount.count}</div>}
+                                            {!brandsCount.count && <div>
+                                                <SkeletonTheme color="#202020" highlightColor="#444">
+                                                    <Skeleton />
+                                                </SkeletonTheme></div>}
+                                        </h4>
+                                        <span>
+                                            {brandsCount.title && <div>{brandsCount.title}</div>}
+                                            {!brandsCount.title && <div>
+                                                <SkeletonTheme color="#202020" highlightColor="#444">
+                                                    <Skeleton />
+                                                </SkeletonTheme></div>}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </Link>
+                        </div> */}
+                        {/* example 2 */}
+                        {/* <div className="col-6">
+                            {categoriesCount.count &&
+                                <Link to="/categories" >
+                                    <div className='status-card'>
+                                        <div className="status-card__icon">
+                                            <i className="bx bx-category"></i>
+                                        </div>
+                                        <div className="status-card__info">
+                                            <h4>
+                                                {categoriesCount.count}
+                                            </h4>
+                                            <span>
+                                                {categoriesCount.title}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            }
+                            {
+                                !categoriesCount.count &&
+                                <SkeletonTheme color="#2d2d2d" highlightColor="#444">
+                                    <Skeleton height={150} wrapper={Box} />
+                                </SkeletonTheme>
+                            }
+                        </div> */}
                         {shopStatusCards.map((item, index) => (
                             <div className="col-6" key={index}>
-                                <Link to={`/${item.link}`} >
-                                    <StatusCard
-                                        icon={item.icon}
-                                        count={numFormatter(item.count)}
-                                        title={item.title}
-                                    />
-                                </Link>
+                                {item.count &&
+                                    <Link to={`/${item.link}`} >
+                                        <div className='status-card'>
+                                            <div className="status-card__icon">
+                                                <i className={item.icon}></i>
+                                            </div>
+                                            <div className="status-card__info">
+                                                <h4>{item.count}</h4>
+                                                <span>{item.title}</span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                }
+                                {
+                                    !item.count &&
+                                    <SkeletonTheme color="#2d2d2d00" highlightColor="#e8e8e850">
+                                        <Skeleton height={154} wrapper={Box} />
+                                    </SkeletonTheme>
+                                }
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className="col-7">
                     <div className="card full-height">
+
                         <Chart
                             options={themeReducer === 'theme-mode-dark' ? {
                                 ...ordersRegionData.options,
@@ -457,8 +553,24 @@ const Dashboard = (props) => {
                             type='area'
                             height='100%'
                         />
+
+
+
+                        {/* <Chart
+                            options={themeReducer === 'theme-mode-dark' ? {
+                                ...ordersRegionData.options,
+                                theme: { mode: 'dark' }
+                            } : {
+                                ...ordersRegionData.options,
+                                theme: { mode: 'light' }
+                            }}
+                            series={ordersRegionData.series}
+                            type='area'
+                            height='100%'
+                        /> */}
                     </div>
                 </div>
+                {/* orders chart and lastest orders */}
                 {orders.length > 0 ? <>
                     <div className="col-4">
                         <div className="card">
@@ -496,9 +608,10 @@ const Dashboard = (props) => {
                                 <Link to='/orders'>view all</Link>
                             </div>
                         </div>
-                    </div></> : null}
+                    </div>
+                </> : null}
 
-
+                {/* favorite products */}
                 {
                     favoriteProducts.length > 0 ?
                         <div className="col-12">
@@ -518,13 +631,11 @@ const Dashboard = (props) => {
                                     <Link to='/products'>view all</Link>
                                 </div>
                             </div>
-                        </div>
-
-                        : null
+                        </div> : null
                 }
             </div>
 
-
+            {/* videos */}
             <div className="row">
                 <div className="col-12">
                     <div className="tableHeader">
