@@ -54,3 +54,6 @@
 .badge-none {
     background-color: var(--main-color-red);
 }
+.badge-market {
+    background-color: var(--main-color-cyan);
+}

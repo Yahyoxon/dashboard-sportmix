@@ -33,7 +33,12 @@ const Products = (props) => {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
     };
 
-    const ins_arr = [{ link: "all", name: "Все" }, { link: "order", name: "Заказать" }, { link: "none", name: "Скрыть" }]
+    const ins_arr = [
+        { link: "all", name: "Все" },
+        { link: "order", name: "Заказать" },
+        { link: "market", name: "Маркет" },
+        { link: "none", name: "Скрыть" },
+      ];
 
     const customerTableHead = [
         '',
