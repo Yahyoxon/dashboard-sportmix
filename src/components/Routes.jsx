@@ -26,6 +26,7 @@ import EditBrand from './edit/EditBrandAws'
 import EditCourseCategory from './edit/EditCourseCategoryAws'
 import EditOrder from './edit/EditOrder'
 import AddAds from './add/AddAds'
+import { Mediafiles } from '../pages/Mediafiles'
 
 const Routes = () => {
     const [videos, setVideos] = useState([])
@@ -166,6 +167,9 @@ const Routes = () => {
                 </Route>
                 <Route path='/ads'>
                     <Ads brands={brands} />
+                </Route>
+                <Route path='/mediafiles'>
+                    <Mediafiles products={products} />
                 </Route>
 
                 <Route component={PageNotFound} />

@@ -3,6 +3,8 @@ import axios from "axios";
 import "../../assets/css/products.scss";
 import { useHistory } from "react-router-dom";
 import S3FileUpload from "react-s3";
+import CKEditor from "react-ckeditor-component";
+import { ckEditorConfig } from "../../ckEditorConfig";
 import uploadImg from "../../assets/images/photo (1).png";
 
 const AddProduct = (props) => {
@@ -16,10 +18,31 @@ const AddProduct = (props) => {
   const [brand_name, setBrand_name] = useState("");
   const [installment, setInstallment] = useState("");
   const [images, setImages] = useState([]);
+
+  const [seoTitle, setSeoTitle] = useState("");
+  const [seoDescription, setSeoDescription] = useState("");
   const [urls, setUrls] = useState([]);
   const [isUpload, setIsUpload] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isSeoTitleGood, setisSeoTitleGood] = useState("seoTransparent");
+  const [isSeoDescGood, setisSeoDescGood] = useState("seoTransparent");
+ 
+  useEffect(() => {
+    if (45 <= seoTitle.length && seoTitle.length <= 60) {
+      setisSeoTitleGood("seoTitleGood");
+    }
+    else if (seoTitle.length ===0) setisSeoTitleGood("seoTransparent")
+    else setisSeoTitleGood("seoTitleNotGood");
+  }, [seoTitle]);
+  
+  useEffect(() => {
+    if (110 <= seoDescription.length && seoDescription.length <= 160) {
+      setisSeoDescGood("seoTitleGood");
+    } 
+    else if (seoDescription.length ===0) setisSeoDescGood("seoTransparent")
+    else setisSeoDescGood("seoTitleNotGood");
+  }, [seoDescription])
 
   const ins_arr = [
     { link: "all", name: "Все" },
@@ -88,6 +111,8 @@ const AddProduct = (props) => {
             brand_name: brand_name,
             installment: installment,
             images: urls,
+            meta_title: seoTitle || name ,
+            meta_description: seoDescription || description
           })
           .then((res) => {
             if (res.data === true) {
@@ -126,16 +151,14 @@ const AddProduct = (props) => {
                 required
               />
             </div>
-            <div className="topnav__textarea" style={{ marginBottom: "15px" }}>
-              <textarea
-                rows="8"
-                type="text"
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Описание товара"
-                title="Описание товара"
-                required
+            <div style={{ marginBottom: "15px" }}>
+              <CKEditor
+                activeClass="topnav__textarea"
+                config={ckEditorConfig}
+                content={description}
+                events={{
+                  change: (e) => setDescription(e.editor.getData()),
+                }}
               />
             </div>
             <div className="topnav__input" style={{ marginBottom: "15px" }}>
@@ -205,8 +228,42 @@ const AddProduct = (props) => {
                 })}
               </select>
             </div>
+
+            <h3
+              className="seo-headline"
+              style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
+            >
+              SEO
+            </h3>
+            <div className="topnav__input" style={{ marginBottom: "15px" }}>
+              <input
+                type="text"
+                id="seoTitle"
+                maxlength="70"
+                value={seoTitle}
+                placeholder="Title"
+                onChange={(e) => setSeoTitle(e.target.value)}
+                title="SEO Title"
+              />
+              <div className={isSeoTitleGood}>
+                <p>{seoTitle.length}</p>
+              </div>
+            </div>
+            <div className="topnav__input" style={{ marginBottom: "15px" }}>
+              <input
+                type="text"
+                id="description"
+                placeholder="Description"
+                value={seoDescription}
+                onChange={(e) => setSeoDescription(e.target.value)}
+                title="SEO Description"
+              /> 
+              <div className={isSeoDescGood}>
+                <p>{seoDescription.length}</p>
+              </div>
+            </div>
+           
             <div className="images-labels">
-              {/* {() => setIsDeleted(true)} */}
               {isDeleted
                 ? images &&
                   images.map((imgFile, i) => {

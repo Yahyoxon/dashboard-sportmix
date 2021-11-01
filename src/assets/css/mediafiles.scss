@@ -1,0 +1,225 @@
+:root {
+    --main-bg: #ffffff;
+    --second-bg: #fafafb;
+    --txt-color: #455560;
+    --txt-white: #fff;
+    --main-color: #349eff;
+    --second-color: #62b4ff;
+    --box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    --main-bg-light: #ffffff;
+    --second-bg-light: #fafafb;
+    --txt-color-light: #455560;
+    --box-shadow-light: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    --main-bg-dark: #2d2d2d;
+    --second-bg-dark: #202020;
+    --txt-color-dark: #bbbbbb;
+    --box-shadow-dark: rgba(0, 0, 0, 0.2) 0px 5px 10px;
+
+    --main-color-blue: #349eff;
+    --second-color-blue: #62b4ff;
+
+    --main-color-red: #fb0b12;
+    --second-color-red: #ff4a6b;
+
+    --main-color-cyan: #10d4d2;
+    --second-color-cyan: #2ae9e6;
+
+    --main-color-green: #019707;
+    --second-color-green: #4caf50;
+
+    --main-color-orange: #d68102;
+    --second-color-orange: #fca11a;
+
+    --sidebar-width: 300px;
+    --border-radius: 15px;
+    --topnav-height: 110px;
+    --transition-cubic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.animLoader {
+    animation: loadingAnimation linear 1s;
+    animation-iteration-count: infinite;
+    transform-origin: 50% 50%;
+    -webkit-animation: loadingAnimation linear 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 50% 50%;
+    -moz-animation: loadingAnimation linear 1s;
+    -moz-animation-iteration-count: infinite;
+    -moz-transform-origin: 50% 50%;
+    -o-animation: loadingAnimation linear 1s;
+    -o-animation-iteration-count: infinite;
+    -o-transform-origin: 50% 50%;
+    -ms-animation: loadingAnimation linear 1s;
+    -ms-animation-iteration-count: infinite;
+    -ms-transform-origin: 50% 50%;
+}
+
+.media-content {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 2fr));
+    grid-template-rows: masonry;
+    width: 100%;
+
+    .images-grid {
+        background-color: var(--main-bg);
+        display: flex;
+        flex-wrap: wrap;
+        box-shadow: var(--box-shadow);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        width: 130px;
+        height: 130px;
+        margin-right: 15px;
+      
+        img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        i{
+            font-size: 40px;
+            color: black;
+        }
+    }
+}
+
+.overlay-base {
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(44, 44, 44, 0);
+    opacity: 0;
+    transition-property: background-color, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-after {
+    background-color: rgba(0, 0, 0, 0.089);
+    opacity: 1;
+}
+
+.overlay-before {
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0;
+}
+
+.content-base {
+    position: relative;
+    margin: 0 auto;
+    border: 0;
+    outline: 0;
+    height: 0%;
+    width: 0%;
+    background-color: transparent;
+    transition-property: background-color, width, height;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+    border-radius: 15px;
+
+    img {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.content-after {
+    width: 500px;
+    height: auto;
+    background: rgb(240, 240, 240);
+}
+
+.content-before {
+    width: 0%;
+    height: 0%;
+    background-color: transparent;
+}
+
+.add-media {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+  
+    button {
+        font-size: 16px;
+        padding: 8px 14px;
+    }
+}
+
+.upload-file {
+    background: var(--main-bg-light);
+    border-radius: 10px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    position: relative;
+
+}
+
+.modal-content {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .modal-action {
+        background: rgba(19, 19, 19, 0.281);
+        padding: 10px;
+        border-radius: 15px;
+        color: rgb(255, 255, 255);
+        transition: 0.1s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        i {
+            color: rgb(255, 255, 255);
+            transition: 0.1s;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        &:hover {
+            background: rgba(0, 0, 0, 0.377);
+            transition: 0.1s;
+            
+            i {
+                transform: scale(1.1);
+                transition: 0.1s;
+            }
+            
+        }
+
+
+    }
+}
+.file-size{
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    div{
+        font-size: 16px;
+    }
+}

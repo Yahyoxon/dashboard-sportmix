@@ -5,6 +5,7 @@ import '../../assets/css/products.scss'
 import uploadImg from '../../assets/images/photo (1).png'
 import { useParams } from 'react-router-dom';
 
+
 const EditCategory = () => {
     const { id } = useParams();
 

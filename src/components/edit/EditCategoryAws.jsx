@@ -5,14 +5,16 @@ import uploadImg from '../../assets/images/photo (1).png'
 import { useParams } from 'react-router-dom';
 import S3FileUpload from 'react-s3'
 import { useHistory } from "react-router-dom";
+import CKEditor from "react-ckeditor-component";
+import { ckEditorConfig } from "../../ckEditorConfig";
 
 const EditCategory = () => {
     const { id } = useParams();
     const history = useHistory();
-
     const [isUpload, setIsUpload] = useState(false);
     const [categoryName, setCategoryName] = useState("")
     const [categoryLink, setCategoryLink] = useState("")
+    const [description, setDescription] = useState("");
     const [categoryNewImage, setCategoryNewImage] = useState([])
     const [isImageUploaded, setIsImageUploaded] = useState(false)
     const [categoryOldImage, setCategoryOldImage] = useState("")
@@ -30,6 +32,7 @@ const EditCategory = () => {
         const response = await axios.get(`https://api.sport-mix.uz/api/categories/readSingle?id=${id}`)
         setCategoryName(response.data.name)
         setCategoryLink(response.data.link)
+        setDescription(response.data.description)
         setCategoryOldImage(response.data.image)
     }
     const handleChangeImage = (e) => {
@@ -40,13 +43,11 @@ const EditCategory = () => {
         }
     }
 
-
     const publishCategory = async (e) => {
         e.preventDefault()
         setIsUpload(true)
 
         if (isImageUploaded) {
-
             S3FileUpload.uploadFile(categoryNewImage, config)
                 .then((data) => {
                     axios.put(`https://api.sport-mix.uz/api/categories/update`,
@@ -54,6 +55,7 @@ const EditCategory = () => {
                             "id": id,
                             "name": categoryName,
                             "link": categoryLink,
+                            "description": description,
                             "image": data.location
                         })
                         .then((res) => {
@@ -78,6 +80,7 @@ const EditCategory = () => {
                     "id": id,
                     "name": categoryName,
                     "link": categoryLink,
+                    "description": description,
                     "image": categoryOldImage
                 }
             )
@@ -94,7 +97,6 @@ const EditCategory = () => {
         getResponse(id);
     }, [id])
 
-
     //edit image
     // const editImage = (image) => {
     //     console.log(previewImages);
@@ -109,8 +111,6 @@ const EditCategory = () => {
     //     //     console.log(temp);
     //     // }
     // }
-
-
 
     return (
         <div>
@@ -128,6 +128,19 @@ const EditCategory = () => {
                         <div className="topnav__input" style={{ marginBottom: "15px" }}>
                             <input type="text" id="link" value={categoryLink} onChange={(e) => { setCategoryLink(e.target.value) }} placeholder="Ссылка для категории" required />
                         </div>
+                        
+                        <div style={{ marginBottom: "15px" }}>
+                            {console.log(description)}
+              <CKEditor
+                activeClass="topnav__textarea"
+                config={ckEditorConfig}
+                content={description}
+                events={{
+                  change: (e) => setDescription(e.editor.getData()),
+                }}
+              />
+            </div>
+                        
                         <div className="images-labels">
                             {
                                 isUpload === false ? <div className="imgActions">
@@ -161,9 +174,7 @@ const EditCategory = () => {
                         <div className="topnav__input">
                             {
                                 isUpload === true ? <div style={{ width: "100%", padding: "7px", textAlign: "center" }} className="badge badge-primary ">
-                                    <div className="bx bx-loader-circle animLoader"></div> Загрузка
-                                    {/* <progress value={progress} max="100" />
-                                    <label>{progress} %</label> */}
+                                    <div className="bx bx-loader-circle animLoader"></div> Загрузка ...
                                 </div> : <button style={{ width: "100%", padding: "12px" }} type="submit" className="badge badge-primary">Изменить</button>
                             }
                         </div>
