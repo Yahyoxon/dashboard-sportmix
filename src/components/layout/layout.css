@@ -1,11 +1,15 @@
 .layout {
     color: var(--txt-color);
+    display: flex;
+    justify-content: space-between;
+    position: relative;
 }
 
 .layout__content {
-    padding-left: var(--sidebar-width);
+    /* padding-left: var(--dsds-sidebar-width); */
     background-color: var(--second-bg);
     min-height: 100vh;
+    width: 100%;
 }
 
 .layout__content-main {

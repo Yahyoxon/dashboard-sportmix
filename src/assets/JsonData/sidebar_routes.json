@@ -48,6 +48,11 @@
         "display_name": "Медиафайлы",
         "route": "/mediafiles",
         "icon": "bx bx-images"
+    },
+    {
+        "display_name": "Админы Маркета",
+        "route": "/market-admins",
+        "icon": "bx bx-user-pin"
     }
 ]
 

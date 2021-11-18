@@ -18,11 +18,8 @@ const Layout = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-
-
     const formSuccess = async (e) => {
         e.preventDefault()
-
         const response = await axios.post('https://api.sport-mix.uz/api/admin/check',
             {
                 "username": email,
@@ -47,8 +44,6 @@ const Layout = () => {
 
     return (
         <BrowserRouter>
-            {/* <Route>
-            </Route> */}
             <Route render={(props) => (
                 <div className={`layout ${themeReducer.mode} ${themeReducer.color}`}>
                     {

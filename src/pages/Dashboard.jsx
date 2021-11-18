@@ -42,20 +42,6 @@ const Dashboard = (props) => {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
 
-  // useEffect(() => {
-  //     (async () => {
-  //         const response = await axios.post('https://api.sport-mix.uz/api/analytics/getBrandsCount')
-  //         setBrandsCount(response.data)
-  //     })()
-  // }, [])
-  // //categories count
-  // useEffect(() => {
-  //     setTimeout(async () => {
-  //         const response = await axios.post('https://api.sport-mix.uz/api/analytics/getCategoriesCount')
-  //         setCategoriesCount(response.data)
-  //     }, 0);
-  // }, [])
-
   //brands count
   async function getBrandsCount() {
     const response = await axios.post(
@@ -344,32 +330,6 @@ const Dashboard = (props) => {
       },
     },
   };
-  // const orderStatusCards = [
-  //     {
-  //         "icon": "bx bx-time",
-  //         "count": pendingOrdersCount.count,
-  //         "link": "orders",
-  //         "title": pendingOrdersCount.title
-  //     },
-  //     {
-  //         "icon": "bx bx-video",
-  //         "count": videosCount.count,
-  //         "link": "video",
-  //         "title": videosCount.title
-  //     },
-  //     {
-  //         "icon": "bx bx-cart",
-  //         "count": productsCount.count,
-  //         "link": "products",
-  //         "title": productsCount.title
-  //     },
-  //     {
-  //         "icon": "bx bx-cart",
-  //         "count": productsCount.count,
-  //         "link": "products",
-  //         "title": productsCount.title
-  //     }
-  // ]
 
   //regions chart
   const chartOptionsRegion = {
@@ -474,9 +434,7 @@ const Dashboard = (props) => {
     </tr>
   );
 
-  const Box = ({ children }) => (
-    <div className="status-card-without-padding">{children}</div>
-  );
+ 
 
   return (
     <div>
@@ -488,60 +446,6 @@ const Dashboard = (props) => {
         </div>
         <div className="col-5">
           <div className="row">
-            {/* example 1 */}
-            {/* <div className="col-6">
-                            <Link to="/brands" >
-                                <div className='status-card'>
-                                    <div className="status-card__icon">
-                                        <i className="bx bx-shopping-bag"></i>
-                                    </div>
-                                    <div className="status-card__info">
-                                        <h4>
-                                            {brandsCount.count && <div>{brandsCount.count}</div>}
-                                            {!brandsCount.count && <div>
-                                                <SkeletonTheme color="#202020" highlightColor="#444">
-                                                    <Skeleton />
-                                                </SkeletonTheme></div>}
-                                        </h4>
-                                        <span>
-                                            {brandsCount.title && <div>{brandsCount.title}</div>}
-                                            {!brandsCount.title && <div>
-                                                <SkeletonTheme color="#202020" highlightColor="#444">
-                                                    <Skeleton />
-                                                </SkeletonTheme></div>}
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </Link>
-                        </div> */}
-            {/* example 2 */}
-            {/* <div className="col-6">
-                            {categoriesCount.count &&
-                                <Link to="/categories" >
-                                    <div className='status-card'>
-                                        <div className="status-card__icon">
-                                            <i className="bx bx-category"></i>
-                                        </div>
-                                        <div className="status-card__info">
-                                            <h4>
-                                                {categoriesCount.count}
-                                            </h4>
-                                            <span>
-                                                {categoriesCount.title}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </Link>
-                            }
-                            {
-                                !categoriesCount.count &&
-                                <SkeletonTheme color="#2d2d2d" highlightColor="#444">
-                                    <Skeleton height={150} wrapper={Box} />
-                                </SkeletonTheme>
-                            }
-                        </div> */}
-                        {console.log(shopStatusCards.length)}
             {shopStatusCards.map((item, index) => (
               <div className="col-6" key={index}>
                   <Link to={`/${item.link}`}>
@@ -577,19 +481,6 @@ const Dashboard = (props) => {
               type="area"
               height="100%"
             />
-
-            {/* <Chart
-                            options={themeReducer === 'theme-mode-dark' ? {
-                                ...ordersRegionData.options,
-                                theme: { mode: 'dark' }
-                            } : {
-                                ...ordersRegionData.options,
-                                theme: { mode: 'light' }
-                            }}
-                            series={ordersRegionData.series}
-                            type='area'
-                            height='100%'
-                        /> */}
           </div>
         </div>
         {/* orders chart and lastest orders */}
@@ -613,9 +504,6 @@ const Dashboard = (props) => {
                   series={chartOptionsRegion.series}
                   type="pie"
                 />
-                {/* <div className="card__footer">
-                                <Link to='/orders'>view all</Link>
-                            </div> */}
               </div>
             </div>
             <div className="col-8">

@@ -4,9 +4,9 @@ import '../../assets/css/products.scss'
 import uploadImg from '../../assets/images/photo (1).png'
 import S3FileUpload from 'react-s3'
 import { useHistory } from "react-router-dom";
+
 const AddVideo = () => {
     const history = useHistory();
-    // const [progress, setProgress] = useState(0);
     const [name, setName] = useState("")
     const [video, setVideo] = useState([])
     const [videoPreview, setVideoPreview] = useState("")
@@ -29,33 +29,21 @@ const AddVideo = () => {
         }
     }
 
-
     const publishVideo = async (e) => {
         e.preventDefault()
         if (isVideoUploaded) {
             setIsUpload(true)
-            S3FileUpload.uploadFile(video, config)
-                .then((data) => {
-                    axios.post(`https://api.sport-mix.uz/api/videos/create`,
+            const data = await S3FileUpload.uploadFile(video, config)
+                   const response = await axios.post(`https://api.sport-mix.uz/api/videos/create`,
                         {
                             "name": name,
                             "link": data.location
                         })
-                        .then((res) => {
-                            // console.log(res)
-                            if (res.data === true) {
+                            if (response.data === true) {
                                 history.goBack();
                             } else {
-                                console.log(res);
+                                console.log(response);
                             }
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
         }
         else {
             setIsUpload(false)
@@ -92,8 +80,6 @@ const AddVideo = () => {
                             {
                                 isUpload === true ? <div style={{ width: "100%", padding: "7px", textAlign: "center" }} className="badge badge-primary ">
                                     <div className="bx bx-loader-circle animLoader"></div> Загрузка
-                                    {/* <progress value={progress} max="100" />
-                                    <label>{progress} %</label> */}
                                 </div> : <button style={{ width: "100%", padding: "12px" }} type="submit" className="badge badge-primary">Добавить</button>
                             }
 
@@ -104,5 +90,4 @@ const AddVideo = () => {
         </div>
     )
 }
-
 export default AddVideo

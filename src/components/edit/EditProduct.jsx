@@ -60,17 +60,17 @@ const EditProduct = (props) => {
     const response = await axios.get(
       `https://api.sport-mix.uz/api/products/readSingle?id=${id}`
     );
-    setName(response.data[0].name);
-    setDescription(response.data[0].description);
-    setPrice(response.data[0].price);
-    setCashback(response.data[0].cashback);
-    setCategory_name(response.data[0].category_name);
-    setBrand_name(response.data[0].brand_name);
-    setInstallment(response.data[0].installment);
-    setImages(response.data[0].images);
-    setPreviewImages(response.data[0].images);
-    setSeoTitle(response.data[0].meta_title);
-    setSeoDescription(response.data[0].meta_description);
+    setName(response.data.name);
+    setDescription(response.data.description);
+    setPrice(response.data.price);
+    setCashback(response.data.cashback);
+    setCategory_name(response.data.category_name);
+    setBrand_name(response.data.brand_name);
+    setInstallment(response.data.installment);
+    setImages(response.data.images);
+    setPreviewImages(response.data.images);
+    setSeoTitle(response.data.meta_title);
+    setSeoDescription(response.data.meta_description);
     
   };
   useEffect(() => {

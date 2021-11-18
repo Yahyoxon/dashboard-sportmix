@@ -21,14 +21,10 @@ const AddCategory = () => {
         }
     }
 
-
     const publishCategory = async (e) => {
-
-
         e.preventDefault()
         setIsUpload(true)
         if (isImageUploaded === true) {
-
             const uploadTask = storage.ref(`categoriesImage/${categoryNewImage.name}`).put(categoryNewImage);
             uploadTask.on(
                 "state_changed",
@@ -43,7 +39,6 @@ const AddCategory = () => {
                 },
                 async () => {
                     const u = await storage.ref("categoriesImage").child(categoryNewImage.name).getDownloadURL()
-
                     const response = await axios.post(`https://api.sport-mix.uz/api/categories/create`,
                         {
                             "name": categoryName,

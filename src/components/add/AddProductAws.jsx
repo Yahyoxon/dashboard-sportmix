@@ -6,10 +6,10 @@ import S3FileUpload from "react-s3";
 import CKEditor from "react-ckeditor-component";
 import { ckEditorConfig } from "../../ckEditorConfig";
 import uploadImg from "../../assets/images/photo (1).png";
+import uploadVideo from "../../assets/images/61+zmrkLowL.png";
 
 const AddProduct = (props) => {
   const history = useHistory();
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -18,7 +18,8 @@ const AddProduct = (props) => {
   const [brand_name, setBrand_name] = useState("");
   const [installment, setInstallment] = useState("");
   const [images, setImages] = useState([]);
-
+  const [tgPostLink, setTgPostLink] = useState("");
+  const [video, setVideo] = useState([]);
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
   const [urls, setUrls] = useState([]);
@@ -27,22 +28,23 @@ const AddProduct = (props) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isSeoTitleGood, setisSeoTitleGood] = useState("seoTransparent");
   const [isSeoDescGood, setisSeoDescGood] = useState("seoTransparent");
- 
+  const [isVideoUploaded, setIsVideoUploaded] = useState(false);
+  const [videoPreview, setVideoPreview] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+
   useEffect(() => {
     if (45 <= seoTitle.length && seoTitle.length <= 60) {
       setisSeoTitleGood("seoTitleGood");
-    }
-    else if (seoTitle.length ===0) setisSeoTitleGood("seoTransparent")
+    } else if (seoTitle.length === 0) setisSeoTitleGood("seoTransparent");
     else setisSeoTitleGood("seoTitleNotGood");
   }, [seoTitle]);
-  
+
   useEffect(() => {
     if (110 <= seoDescription.length && seoDescription.length <= 160) {
       setisSeoDescGood("seoTitleGood");
-    } 
-    else if (seoDescription.length ===0) setisSeoDescGood("seoTransparent")
+    } else if (seoDescription.length === 0) setisSeoDescGood("seoTransparent");
     else setisSeoDescGood("seoTitleNotGood");
-  }, [seoDescription])
+  }, [seoDescription]);
 
   const ins_arr = [
     { link: "all", name: "Все" },
@@ -51,12 +53,14 @@ const AddProduct = (props) => {
     { link: "none", name: "Скрыть" },
   ];
 
-  const config = {
-    bucketName: "sportmix",
-    dirName: "products",
-    region: "ap-northeast-1",
-    accessKeyId: "AKIA2W4C7MZOLNVWYA5Y",
-    secretAccessKey: "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",
+  const config = (dirName) => {
+    return {
+      bucketName: "sportmix",
+      dirName: dirName,
+      region: "ap-northeast-1",
+      accessKeyId: "AKIA2W4C7MZOLNVWYA5Y",
+      secretAccessKey: "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",
+    };
   };
 
   const handleChange = (e) => {
@@ -68,23 +72,29 @@ const AddProduct = (props) => {
       }
     }
   };
+  const handleChangeVideo = (e) => {
+    if (e.target.files.length > 0) {
+      setVideo(e.target.files[0]);
+      setVideoPreview(URL.createObjectURL(e.target.files[0]));
+      setIsVideoUploaded(true);
+    }
+  };
 
   //delete image
   const deleteImage = (image) => {
     var index = images.indexOf(image);
     setIsDeleted(!isDeleted);
-
     if (~index) {
       images.splice(index, 1);
     }
   };
 
-  const uploadImages = async (e) => {
+  const uploadDataToS3 = async (e) => {
     e.preventDefault();
     if (isImageUploaded) {
       setIsUpload(true);
       images.map((perImage) =>
-        S3FileUpload.uploadFile(perImage, config)
+        S3FileUpload.uploadFile(perImage, config("products"))
           .then((data) => {
             setUrls((prevState) => [...prevState, data.location]);
           })
@@ -92,6 +102,15 @@ const AddProduct = (props) => {
             console.log(err);
           })
       );
+      if (isVideoUploaded) {
+        const uploadedVideo = await S3FileUpload.uploadFile(
+          video,
+          config("products/video")
+        );
+        setVideoUrl(uploadedVideo.location);
+      } else {
+        setVideoUrl(null);
+      }
     } else {
       setIsUpload(false);
       alert("Select an image.");
@@ -99,38 +118,55 @@ const AddProduct = (props) => {
   };
 
   useEffect(() => {
-    function addProduct() {
-      if (urls.length === images.length) {
-        axios
-          .post(`https://api.sport-mix.uz/api/products/create`, {
+    async function addProduct() {
+      if (
+        urls.length === images.length &&
+        (isVideoUploaded ? videoUrl.length > 0 : true)
+      ) {
+        const response = await axios.post(
+          `https://api.sport-mix.uz/api/products/create`,
+          {
             name: name,
             description: description,
             price: price,
-            cashback: cashback,
+            cashback: cashback || 0,
             category_name: category_name,
             brand_name: brand_name,
             installment: installment,
             images: urls,
-            meta_title: seoTitle || name ,
-            meta_description: seoDescription || description
-          })
-          .then((res) => {
-            if (res.data === true) {
-              history.goBack();
-            } else {
-              console.log(res);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            link_for_ads: tgPostLink || null,
+            video: videoUrl,
+            meta_title: seoTitle || name,
+            meta_description: seoDescription || description,
+          }
+        );
+        if (response.data === true) {
+          history.goBack();
+        } else {
+          console.log(response);
+        }
       } else {
-        setIsUpload(false);
         return null;
       }
     }
     addProduct();
-  }, [urls]);
+  }, [
+    urls,
+    videoUrl,
+    name,
+    description,
+    price,
+    cashback,
+    category_name,
+    brand_name,
+    installment,
+    tgPostLink,
+    seoTitle,
+    seoDescription,
+    images.length,
+    isVideoUploaded,
+    history,
+  ]);
 
   return (
     <div>
@@ -139,7 +175,7 @@ const AddProduct = (props) => {
       </div>
       <div className="card">
         <div className="card__body">
-          <form onSubmit={uploadImages}>
+          <form onSubmit={uploadDataToS3}>
             <div className="topnav__input" style={{ marginBottom: "15px" }}>
               <input
                 type="text"
@@ -205,13 +241,14 @@ const AddProduct = (props) => {
                 <option selected value="">
                   Выбрать
                 </option>
-                {props.brands.map((brand, o) => {
-                  return (
-                    <option key={o} value={brand.link}>
-                      {brand.name}
-                    </option>
-                  );
-                })}
+                {props.brands &&
+                  props.brands.map((brand, o) => {
+                    return (
+                      <option key={o} value={brand.link}>
+                        {brand.name}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
             <div className="topnav__select" style={{ marginBottom: "15px" }}>
@@ -219,16 +256,26 @@ const AddProduct = (props) => {
                 <option selected value="">
                   Выбрать
                 </option>
-                {ins_arr.map((ins, q) => {
-                  return (
-                    <option key={q} value={ins.link}>
-                      {ins.name}
-                    </option>
-                  );
-                })}
+                {ins_arr &&
+                  ins_arr.map((ins, q) => {
+                    return (
+                      <option key={q} value={ins.link}>
+                        {ins.name}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
-
+            <div className="topnav__input" style={{ marginBottom: "15px" }}>
+              <input
+                type="text"
+                id="price"
+                value={tgPostLink}
+                placeholder="Телеграм ссилка для рекламы"
+                title="Телеграм ссилка для рекламы"
+                onChange={(e) => setTgPostLink(e.target.value)}
+              />
+            </div>
             <h3
               className="seo-headline"
               style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
@@ -257,12 +304,18 @@ const AddProduct = (props) => {
                 value={seoDescription}
                 onChange={(e) => setSeoDescription(e.target.value)}
                 title="SEO Description"
-              /> 
+              />
               <div className={isSeoDescGood}>
                 <p>{seoDescription.length}</p>
               </div>
             </div>
-           
+
+            <h3
+              className="seo-headline"
+              style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
+            >
+              Изображение
+            </h3>
             <div className="images-labels">
               {isDeleted
                 ? images &&
@@ -330,13 +383,55 @@ const AddProduct = (props) => {
               />
               <br />
             </div>
+
+            {/*the start video section */}
+            <h3
+              className="seo-headline"
+              style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
+            >
+              Видео
+            </h3>
+            <div className="images-labels">
+              {videoPreview ? (
+                <div className="restoreVideo">
+                  <video
+                    className="addVideo borderRadius"
+                    src={videoPreview}
+                    controls
+                  />
+                  <label htmlFor="video">
+                    <div className="updateVideo bx bx-edit "></div>
+                  </label>
+                </div>
+              ) : (
+                <label htmlFor="video">
+                  <img
+                    src={uploadVideo}
+                    width="100px"
+                    style={{ marginRight: "5px" }}
+                    alt="noImage"
+                  />
+                </label>
+              )}
+
+              <input
+                accept="video/mp4,video/x-m4v,video/*"
+                style={{ display: "none" }}
+                type="file"
+                id="video"
+                onChange={handleChangeVideo}
+              />
+              <br />
+            </div>
+            {/* the end video section */}
+
             <div className="topnav__input">
-              {isUpload === true ? (
+              {isUpload ? (
                 <div
                   style={{ width: "100%", padding: "7px", textAlign: "center" }}
                   className="badge badge-primary "
                 >
-                  <div className="bx bx-loader-circle animLoader"></div>{" "}
+                  <div className="bx bx-loader-circle animLoader"></div>
                   Загрузка...
                 </div>
               ) : (
