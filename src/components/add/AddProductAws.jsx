@@ -6,7 +6,7 @@ import S3FileUpload from "react-s3";
 import CKEditor from "react-ckeditor-component";
 import { ckEditorConfig } from "../../ckEditorConfig";
 import uploadImg from "../../assets/images/photo (1).png";
-import uploadVideo from "../../assets/images/61+zmrkLowL.png";
+import uploadVideo from "../../assets/images/61zmrkLowL.png";
 import TodoForm from "./addProductCharacter/TodoForm";
 import Todo from "./addProductCharacter/Todo";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
