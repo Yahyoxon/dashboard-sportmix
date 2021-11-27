@@ -56,7 +56,7 @@ const Products = (props) => {
     const deleteProduct = async (id, name) => {
         const confirm = window.confirm(`Do you really want to delete ${name}?`);
         if (confirm === true) {
-            await axios.delete(`https://api.sport-mix.uz/api/products/delete`, {
+            await axios.delete('https://api.sport-mix.uz/api/products/delete', {
                 headers: { "Content-Type": "application/json" },
                 data: { "id": id }
             });
@@ -66,23 +66,9 @@ const Products = (props) => {
         }
 
     }
-    //order product
-    // const orderProduct = async (product, username, phone, region, quantity, brand_name, image, total_price) => {
-    //     const res = await axios.post(`https://api.sport-mix.uz/api/order/create`, {
-    //         "product": product,
-    //         "username": username,
-    //         "phone": phone,
-    //         "region": region,
-    //         "quantity": quantity,
-    //         "brand_name": brand_name,
-    //         "image": image,
-    //         "total_price": total_price
-    //     });
-    //     console.log(res.data);
-    // }
 
     const setInstallment = async (installment, id) => {
-        const response = await axios.put(`https://api.sport-mix.uz/api/products/setInstallment`,
+        const response = await axios.put('https://api.sport-mix.uz/api/products/setInstallment',
             {
                 "installment": installment,
                 "id": id
@@ -97,7 +83,7 @@ const Products = (props) => {
     }
     //set  recommendation
     const setRec = async (p_id) => {
-        await axios.put(`https://api.sport-mix.uz/api/products/setRec`,
+        await axios.put('https://api.sport-mix.uz/api/products/setRec',
             { "id": p_id }
         )
         await getProducts(brand_name)

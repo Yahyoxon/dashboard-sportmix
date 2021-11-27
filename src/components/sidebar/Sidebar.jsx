@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./sidebar.scss";
-import logo from "../../assets/images/sportmix-logo.png";
-import logo2 from "../../assets/images/logo_without_text.png";
+import logo from "../../assets/images/sportmix-new-logo.png";
+import logo2 from "../../assets/images/favicon.png";
 import sidebar_items from "../../assets/JsonData/sidebar_routes.json";
 import { VscMenu, VscClose } from "react-icons/vsc";
 const SidebarItem = (props) => {

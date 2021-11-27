@@ -182,19 +182,19 @@ const AdminAccount = () => {
               <div className="admin-data">
                 <p className="name">{admin.name}</p>
                 <p className="phone">
-                  <strong>Тел:</strong> {admin.phone}
+                  <strong>Tel:</strong> {admin.phone}
                 </p>
                 <p className="adress">
-                  <strong>Область: </strong> {admin.region}
+                  <strong>Viloyat: </strong> {admin.region}
                 </p>
                 <p className="adress">
-                  <strong>Город: </strong> {admin.city}
+                  <strong>Shahar: </strong> {admin.city}
                 </p>
                 <p className="adress">
-                  <strong>Адресс: </strong> {admin.address}
+                  <strong>Adress: </strong> {admin.address}
                 </p>
                 <p className="adress register-date">
-                  <strong>Рег.время: </strong> {admin.registired_at}
+                  <strong>Reg.vaqti: </strong> {admin.registired_at}
                 </p>
               </div>
             </div>

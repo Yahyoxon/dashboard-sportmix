@@ -7,9 +7,15 @@ import CKEditor from "react-ckeditor-component";
 import { ckEditorConfig } from "../../ckEditorConfig";
 import uploadImg from "../../assets/images/photo (1).png";
 import uploadVideo from "../../assets/images/61+zmrkLowL.png";
+import TodoForm from "./addProductCharacter/TodoForm";
+import Todo from "./addProductCharacter/Todo";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import "./addProductCharacter/todo.scss";
 
 const AddProduct = (props) => {
   const history = useHistory();
+  //product details(Inputs)
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -18,10 +24,17 @@ const AddProduct = (props) => {
   const [brand_name, setBrand_name] = useState("");
   const [installment, setInstallment] = useState("");
   const [images, setImages] = useState([]);
-  const [tgPostLink, setTgPostLink] = useState("");
+  //characters of products(Inputs)
+  //video(Inputs)
   const [video, setVideo] = useState([]);
+  const [videoDescription, setVideoDescription] = useState("")
+  //SEO(Inputs)
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
+
+  //telegram post link(Inputs)
+  const [tgPostLink, setTgPostLink] = useState("");
+
   const [urls, setUrls] = useState([]);
   const [isUpload, setIsUpload] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
@@ -135,6 +148,7 @@ const AddProduct = (props) => {
             installment: installment,
             images: urls,
             link_for_ads: tgPostLink || null,
+            characters: characters,
             video: videoUrl,
             meta_title: seoTitle || name,
             meta_description: seoDescription || description,
@@ -168,6 +182,25 @@ const AddProduct = (props) => {
     history,
   ]);
 
+  const [characters, setCharacters] = useState([]);
+
+  const addTodo = (character) => {
+    const newCharacters = [character, ...characters];
+
+    if (!character.textName || /^\s*$/.test(character.textName)) {
+      return;
+    }
+    setCharacters(newCharacters);
+  };
+
+  const removeCharacter = (id) => {
+    const removeArr = [...characters].filter(
+      (character) => character.id !== id
+    );
+
+    setCharacters(removeArr);
+  };
+
   return (
     <div>
       <div className="tableHeader">
@@ -175,276 +208,499 @@ const AddProduct = (props) => {
       </div>
       <div className="card">
         <div className="card__body">
-          <form onSubmit={uploadDataToS3}>
-            <div className="topnav__input" style={{ marginBottom: "15px" }}>
-              <input
-                type="text"
-                id="name"
-                placeholder="Название товара"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                title="Название товара"
-                required
-              />
-            </div>
-            <div style={{ marginBottom: "15px" }}>
-              <CKEditor
-                activeClass="topnav__textarea"
-                config={ckEditorConfig}
-                content={description}
-                events={{
-                  change: (e) => setDescription(e.editor.getData()),
-                }}
-              />
-            </div>
-            <div className="topnav__input" style={{ marginBottom: "15px" }}>
-              <input
-                type="number"
-                id="price"
-                value={price}
-                placeholder="Цена товара"
-                title="Цена товара"
-                onChange={(e) => setPrice(e.target.value)}
-                required
-              />
-            </div>
-            <div className="topnav__input" style={{ marginBottom: "15px" }}>
-              <input
-                type="number"
-                id="cashback"
-                value={cashback}
-                placeholder="Кэшбек"
-                title="Кэшбек"
-                onChange={(e) => setCashback(e.target.value)}
-                required
-              />
-            </div>
-            <div className="topnav__select" style={{ marginBottom: "15px" }}>
-              <select
-                onChange={(e) => setCategory_name(e.target.value)}
-                required
-              >
-                <option selected value="">
-                  Выбрать
-                </option>
-                {props.categories.map((cat, l) => {
-                  return (
-                    <option key={l} value={cat.link}>
-                      {cat.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="topnav__select" style={{ marginBottom: "15px" }}>
-              <select onChange={(e) => setBrand_name(e.target.value)} required>
-                <option selected value="">
-                  Выбрать
-                </option>
-                {props.brands &&
-                  props.brands.map((brand, o) => {
-                    return (
-                      <option key={o} value={brand.link}>
-                        {brand.name}
-                      </option>
-                    );
-                  })}
-              </select>
-            </div>
-            <div className="topnav__select" style={{ marginBottom: "15px" }}>
-              <select onChange={(e) => setInstallment(e.target.value)} required>
-                <option selected value="">
-                  Выбрать
-                </option>
-                {ins_arr &&
-                  ins_arr.map((ins, q) => {
-                    return (
-                      <option key={q} value={ins.link}>
-                        {ins.name}
-                      </option>
-                    );
-                  })}
-              </select>
-            </div>
-            <div className="topnav__input" style={{ marginBottom: "15px" }}>
-              <input
-                type="text"
-                id="price"
-                value={tgPostLink}
-                placeholder="Телеграм ссилка для рекламы"
-                title="Телеграм ссилка для рекламы"
-                onChange={(e) => setTgPostLink(e.target.value)}
-              />
-            </div>
-            <h3
-              className="seo-headline"
-              style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
-            >
-              SEO
-            </h3>
-            <div className="topnav__input" style={{ marginBottom: "15px" }}>
-              <input
-                type="text"
-                id="seoTitle"
-                maxlength="70"
-                value={seoTitle}
-                placeholder="Title"
-                onChange={(e) => setSeoTitle(e.target.value)}
-                title="SEO Title"
-              />
-              <div className={isSeoTitleGood}>
-                <p>{seoTitle.length}</p>
-              </div>
-            </div>
-            <div className="topnav__input" style={{ marginBottom: "15px" }}>
-              <input
-                type="text"
-                id="description"
-                placeholder="Description"
-                value={seoDescription}
-                onChange={(e) => setSeoDescription(e.target.value)}
-                title="SEO Description"
-              />
-              <div className={isSeoDescGood}>
-                <p>{seoDescription.length}</p>
-              </div>
-            </div>
+          <Tabs>
+            <TabList>
+              <Tab>RU</Tab>
+              <Tab>UZ</Tab>
+              <Tab>ENG</Tab>
+            </TabList>
 
-            <h3
-              className="seo-headline"
-              style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
-            >
-              Изображение
-            </h3>
-            <div className="images-labels">
-              {isDeleted
-                ? images &&
-                  images.map((imgFile, i) => {
-                    return (
-                      <div key={i}>
-                        <div className="imgActions">
-                          <img
-                            className="writeImg borderRadius"
-                            src={URL.createObjectURL(imgFile)}
-                            alt="addImage"
-                          />
-                          <div className="overlay borderRadius">
-                            <div
-                              title="Delete image"
-                              onClick={() => {
-                                deleteImage(imgFile);
-                              }}
-                              className="actionButtons del bx bx-trash"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                : images &&
-                  images.map((imgFile, i) => {
-                    return (
-                      <div key={i}>
-                        <div className="imgActions">
-                          <img
-                            className="writeImg borderRadius"
-                            src={URL.createObjectURL(imgFile)}
-                            alt="addImage"
-                          />
-                          <div className="overlay borderRadius">
-                            <div
-                              title="Delete image"
-                              onClick={() => {
-                                deleteImage(imgFile);
-                              }}
-                              className="actionButtons del bx bx-trash"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-              <label htmlFor="img">
-                <img
-                  src={uploadImg}
-                  width="100px"
-                  style={{ marginRight: "5px" }}
-                  alt=""
-                />
-              </label>
-              <input
-                accept="image/jpg,image/jpeg,image/gif,image/png"
-                style={{ display: "none" }}
-                type="file"
-                id="img"
-                multiple
-                required
-                onChange={handleChange}
-              />
-              <br />
-            </div>
-
-            {/*the start video section */}
-            <h3
-              className="seo-headline"
-              style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
-            >
-              Видео
-            </h3>
-            <div className="images-labels">
-              {videoPreview ? (
-                <div className="restoreVideo">
-                  <video
-                    className="addVideo borderRadius"
-                    src={videoPreview}
-                    controls
+            <form onSubmit={uploadDataToS3}>
+              <TabPanel>
+                <h3 className="h3-headline">Информация о продукте</h3>
+                <div className="topnav__input">
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Название товара"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    title="Название товара"
+                    required
                   />
-                  <label htmlFor="video">
-                    <div className="updateVideo bx bx-edit "></div>
-                  </label>
                 </div>
-              ) : (
-                <label htmlFor="video">
+                <div className="topnav__input">
+                  <CKEditor
+                    activeClass="topnav__textarea"
+                    config={ckEditorConfig}
+                    content={description}
+                    events={{
+                      change: (e) => setDescription(e.editor.getData()),
+                    }}
+                  />
+                </div>
+
+                <div className="row-character-seo">
+                  <div className="characters">
+                    <h3 className="h3-headline">Характеристики</h3>
+                    <div className="row-3-inputs">
+                      <div className="todo">
+                        <TodoForm
+                          onSubmit={addTodo}
+                          name="Название"
+                          value="Цинеть"
+                          add="Добавить"
+                        />
+                        <Todo todos={characters} removeTodo={removeCharacter} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="seo-section">
+                    <h3 className="h3-headline">SEO</h3>
+                    <div
+                      className="topnav__input seoInputs"
+                      style={{ marginBottom: "15px" }}
+                    >
+                      <input
+                        type="text"
+                        id="seoTitle"
+                        maxlength="70"
+                        value={seoTitle}
+                        placeholder="Title"
+                        onChange={(e) => setSeoTitle(e.target.value)}
+                        title="SEO Title"
+                      />
+                      <div className={isSeoTitleGood}>
+                        <p>{seoTitle.length}</p>
+                      </div>
+                    </div>
+                    <div
+                      className="topnav__input seoInputs"
+                      style={{ marginBottom: "15px" }}
+                    >
+                      <input
+                        type="text"
+                        id="description"
+                        placeholder="Description"
+                        value={seoDescription}
+                        onChange={(e) => setSeoDescription(e.target.value)}
+                        title="SEO Description"
+                      />
+                      <div className={isSeoDescGood}>
+                        <p>{seoDescription.length}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div
+                      className="topnav__textarea seoInputs"
+                    >
+                      <textarea
+                      rows='3'
+                        id="video-description"
+                        placeholder="Видео описание"
+                        value={videoDescription}
+                        onChange={(e) => setVideoDescription(e.target.value)}
+                        title="Video Description"
+                      />
+                      <div className={isSeoDescGood}>
+                        <p>{seoDescription.length}</p>
+                      </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+              </TabPanel>
+
+              <TabPanel>
+                <h3 className="h3-headline">Tovar ma'lumotlari</h3>
+                <div className="topnav__input">
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Tovar nomi"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    title="Название товара"
+                    required
+                  />
+                </div>
+                <div className="topnav__input">
+                  <CKEditor
+                    activeClass="topnav__textarea"
+                    config={ckEditorConfig}
+                    content={description}
+                    events={{
+                      change: (e) => setDescription(e.editor.getData()),
+                    }}
+                  />
+                </div>
+
+                <div className="row-character-seo">
+                  <div className="characters">
+                    <h3 className="h3-headline">Xarakteristikasi</h3>
+                    <div className="row-3-inputs">
+                      <div className="todo" style={{ marginBottom: "15px" }}>
+                        <TodoForm
+                          onSubmit={addTodo}
+                          name="Nomi"
+                          value="Qiymati"
+                          add="Qo'shish"
+                        />
+                        <Todo todos={characters} removeTodo={removeCharacter} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="seo-section">
+                    <h3 className="h3-headline">SEO</h3>
+                    <div className="topnav__input seoInputs">
+                      <input
+                        type="text"
+                        id="seoTitle"
+                        maxlength="70"
+                        value={seoTitle}
+                        placeholder="Title"
+                        onChange={(e) => setSeoTitle(e.target.value)}
+                        title="SEO Title"
+                      />
+                      <div className={isSeoTitleGood}>
+                        <p>{seoTitle.length}</p>
+                      </div>
+                    </div>
+                    <div
+                      className="topnav__input seoInputs"
+                      style={{ marginBottom: "15px" }}
+                    >
+                      <input
+                        type="text"
+                        id="description"
+                        placeholder="Description"
+                        value={seoDescription}
+                        onChange={(e) => setSeoDescription(e.target.value)}
+                        title="SEO Description"
+                      />
+                      <div className={isSeoDescGood}>
+                        <p>{seoDescription.length}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </TabPanel>
+
+              <TabPanel>
+                <h3 className="h3-headline">Product Details</h3>
+                <div className="topnav__input">
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Product name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    title="Название товара"
+                    required
+                  />
+                </div>
+                <div className="topnav__input">
+                  <CKEditor
+                    activeClass="topnav__textarea"
+                    config={ckEditorConfig}
+                    content={description}
+                    events={{
+                      change: (e) => setDescription(e.editor.getData()),
+                    }}
+                  />
+                </div>
+
+                <div className="row-character-seo">
+                  <div className="characters">
+                    <h3 className="h3-headline">Characters</h3>
+                    <div className="row-3-inputs">
+                      <div className="todo" style={{ marginBottom: "15px" }}>
+                        <TodoForm
+                          onSubmit={addTodo}
+                          name="Name"
+                          value="Value"
+                          add="Add"
+                        />
+                        <Todo todos={characters} removeTodo={removeCharacter} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="seo-section">
+                    <h3 className="h3-headline">SEO</h3>
+                    <div
+                      className="topnav__input seoInputs"
+                      style={{ marginBottom: "15px" }}
+                    >
+                      <input
+                        type="text"
+                        id="seoTitle"
+                        maxlength="70"
+                        value={seoTitle}
+                        placeholder="Title"
+                        onChange={(e) => setSeoTitle(e.target.value)}
+                        title="SEO Title"
+                      />
+                      <div className={isSeoTitleGood}>
+                        <p>{seoTitle.length}</p>
+                      </div>
+                    </div>
+                    <div
+                      className="topnav__input seoInputs"
+                      style={{ marginBottom: "15px" }}
+                    >
+                      <input
+                        type="text"
+                        id="description"
+                        placeholder="Description"
+                        value={seoDescription}
+                        onChange={(e) => setSeoDescription(e.target.value)}
+                        title="SEO Description"
+                      />
+                      <div className={isSeoDescGood}>
+                        <p>{seoDescription.length}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </TabPanel>
+
+              <div className="row-3-inputs">
+                <div
+                  className="topnav__input col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <input
+                    type="number"
+                    id="price"
+                    value={price}
+                    placeholder="Цена товара"
+                    title="Цена товара"
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                  />
+                </div>
+                <div
+                  className="topnav__input col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <input
+                    type="number"
+                    id="cashback"
+                    value={cashback}
+                    placeholder="Кэшбек"
+                    title="Кэшбек"
+                    onChange={(e) => setCashback(e.target.value)}
+                    required
+                  />
+                </div>
+                <div
+                  className="topnav__select col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <select
+                    onChange={(e) => setCategory_name(e.target.value)}
+                    required
+                  >
+                    <option selected value="">
+                      Выбрать
+                    </option>
+                    {props.categories.map((cat, l) => {
+                      return (
+                        <option key={l} value={cat.link}>
+                          {cat.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div
+                  className="topnav__select col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <select
+                    onChange={(e) => setBrand_name(e.target.value)}
+                    required
+                  >
+                    <option selected value="">
+                      Выбрать
+                    </option>
+                    {props.brands &&
+                      props.brands.map((brand, o) => {
+                        return (
+                          <option key={o} value={brand.link}>
+                            {brand.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </div>
+                <div
+                  className="topnav__select col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <select
+                    onChange={(e) => setInstallment(e.target.value)}
+                    required
+                  >
+                    <option selected value="">
+                      Выбрать
+                    </option>
+                    {ins_arr &&
+                      ins_arr.map((ins, q) => {
+                        return (
+                          <option key={q} value={ins.link}>
+                            {ins.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </div>
+                <div
+                  className="topnav__input col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <input
+                    type="text"
+                    id="price"
+                    value={tgPostLink}
+                    placeholder="Телеграм ссилка для рекламы"
+                    title="Телеграм ссилка для рекламы"
+                    onChange={(e) => setTgPostLink(e.target.value)}
+                  />
+                </div>
+              </div>
+              <h3 className="h3-headline">Изображение</h3>
+              <div className="images-labels">
+                {isDeleted
+                  ? images &&
+                    images.map((imgFile, i) => {
+                      return (
+                        <div key={i}>
+                          <div className="imgActions">
+                            <img
+                              className="writeImg borderRadius"
+                              src={URL.createObjectURL(imgFile)}
+                              alt="addImage"
+                            />
+                            <div className="overlay borderRadius">
+                              <div
+                                title="Delete image"
+                                onClick={() => {
+                                  deleteImage(imgFile);
+                                }}
+                                className="actionButtons del bx bx-trash"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  : images &&
+                    images.map((imgFile, i) => {
+                      return (
+                        <div key={i}>
+                          <div className="imgActions">
+                            <img
+                              className="writeImg borderRadius"
+                              src={URL.createObjectURL(imgFile)}
+                              alt="addImage"
+                            />
+                            <div className="overlay borderRadius">
+                              <div
+                                title="Delete image"
+                                onClick={() => {
+                                  deleteImage(imgFile);
+                                }}
+                                className="actionButtons del bx bx-trash"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                <label htmlFor="img">
                   <img
-                    src={uploadVideo}
+                    src={uploadImg}
                     width="100px"
                     style={{ marginRight: "5px" }}
-                    alt="noImage"
+                    alt=""
                   />
                 </label>
-              )}
+                <input
+                  accept="image/jpg,image/jpeg,image/gif,image/png"
+                  style={{ display: "none" }}
+                  type="file"
+                  id="img"
+                  multiple
+                  required
+                  onChange={handleChange}
+                />
+                <br />
+              </div>
 
-              <input
-                accept="video/mp4,video/x-m4v,video/*"
-                style={{ display: "none" }}
-                type="file"
-                id="video"
-                onChange={handleChangeVideo}
-              />
-              <br />
-            </div>
-            {/* the end video section */}
+              {/*the start video section */}
+              <h3 className="h3-headline">Видео</h3>
+              <div className="images-labels">
+                {videoPreview ? (
+                  <div className="restoreVideo">
+                    <video
+                      className="addVideo borderRadius"
+                      src={videoPreview}
+                      controls
+                    />
+                    <label htmlFor="video">
+                      <div className="updateVideo bx bx-edit "></div>
+                    </label>
+                  </div>
+                ) : (
+                  <label htmlFor="video">
+                    <img
+                      src={uploadVideo}
+                      width="100px"
+                      style={{ marginRight: "5px" }}
+                      alt="noImage"
+                    />
+                  </label>
+                )}
 
-            <div className="topnav__input">
-              {isUpload ? (
-                <div
-                  style={{ width: "100%", padding: "7px", textAlign: "center" }}
-                  className="badge badge-primary "
-                >
-                  <div className="bx bx-loader-circle animLoader"></div>
-                  Загрузка...
-                </div>
-              ) : (
-                <button
-                  style={{ width: "100%", padding: "12px" }}
-                  type="submit"
-                  className="badge badge-primary"
-                >
-                  Добавить
-                </button>
-              )}
-            </div>
-          </form>
+                <input
+                  accept="video/mp4,video/x-m4v,video/*"
+                  style={{ display: "none" }}
+                  type="file"
+                  id="video"
+                  onChange={handleChangeVideo}
+                />
+                <br />
+              </div>
+              {/* the end video section */}
+
+              <div className="topnav__input">
+                {isUpload ? (
+                  <div
+                    style={{
+                      width: "100%",
+                      padding: "7px",
+                      textAlign: "center",
+                    }}
+                    className="badge badge-primary "
+                  >
+                    <div className="bx bx-loader-circle animLoader"></div>
+                    Загрузка...
+                  </div>
+                ) : (
+                  <button
+                    style={{ width: "100%", padding: "12px" }}
+                    type="submit"
+                    className="badge badge-primary"
+                  >
+                    Добавить
+                  </button>
+                )}
+              </div>
+            </form>
+          </Tabs>
         </div>
       </div>
     </div>

@@ -38,7 +38,7 @@ const Routes = () => {
   //videos
   async function getVideos() {
     const response = await axios.post(
-      "https://api.sport-mix.uz/api/videos/read",
+      'https://api.sport-mix.uz/api/videos/read',
       { u_id: 16 }
     );
     if (response.data.message) {
@@ -55,7 +55,7 @@ const Routes = () => {
   //products
   async function getProducts() {
     const response = await axios.get(
-      "https://api.sport-mix.uz/api/products/read"
+      'https://api.sport-mix.uz/api/products/read'
     );
     if (response.data.message) {
       setProducts([]);
@@ -71,7 +71,7 @@ const Routes = () => {
   //categories
   async function getCategories() {
     const response = await axios.get(
-      "https://api.sport-mix.uz/api/categories/read"
+      'https://api.sport-mix.uz/api/categories/read'
     );
 
     if (response.data.message) {
@@ -94,7 +94,7 @@ const Routes = () => {
   async function getBrands() {
     try {
       const response = await axios.get(
-        "https://api.sport-mix.uz/api/brands/read"
+        'https://api.sport-mix.uz/api/brands/read'
       );
       setBrands(response.data);
     } catch (error) {
