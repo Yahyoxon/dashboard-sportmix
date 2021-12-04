@@ -21,7 +21,7 @@ const AdminAccount = () => {
     "yaratilgan vaqti",
     "sotilgan soni",
     "Ko'rildi",
-    "Oqim linki"
+    "Oqim linki",
   ];
   const orderTable = [
     "order ID",
@@ -35,7 +35,7 @@ const AdminAccount = () => {
     "To'lov",
     "To'lov holati",
   ];
-  
+
   useEffect(() => {
     (async () => {
       try {
@@ -48,7 +48,7 @@ const AdminAccount = () => {
       }
     })();
   }, [id]);
-  
+
   useEffect(() => {
     (async () => {
       try {
@@ -61,7 +61,7 @@ const AdminAccount = () => {
       }
     })();
   }, [id]);
-  
+
   useEffect(() => {
     let totalSold = [];
     let totalCancel = [];
@@ -77,28 +77,27 @@ const AdminAccount = () => {
     setTotalCancel(totalCancel);
   }, [orders]);
 
-  
-  const getOrders =async(id)=>{
+  const getOrders = async (id) => {
     try {
       const response = await axios.get(
         `https://api.sport-mix.uz/api/order/readByAdmin?id=${id}`
       );
       setOrders(response.data);
     } catch (error) {
-       console.log(error)
-    }    
-  }
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    getOrders(id)
+    getOrders(id);
   }, [id]);
-  
+
   const setPaid = async (paid, order_id) => {
     if (window.confirm("To'landimi?")) {
       await axios.put(`https://api.sport-mix.uz/api/order/setPaid`, {
         paid: paid,
         order_id: order_id,
       });
-      getOrders(id)
+      getOrders(id);
     }
   };
 
@@ -115,7 +114,7 @@ const AdminAccount = () => {
       },
     },
   };
-  
+
   const renderHead = (item, index) => <th key={index}>{item}</th>;
   const renderBody = (oqim, indexOfAdmin) => (
     <tr key={indexOfAdmin}>
@@ -124,15 +123,13 @@ const AdminAccount = () => {
       <td>{oqim.delivered}</td>
       <td>{oqim.visits}</td>
       <td>
-      <a
-        className="badge badge-success"
-        href={oqim.link_website}
-        >
+        <a className="badge badge-success" href={oqim.link_website}>
           <i className="bx bx-link-external"></i>
-        </a></td>
+        </a>
+      </td>
     </tr>
   );
-  
+
   const renderHeadOrders = (item, index) => <th key={index}>{item}</th>;
   const renderBodyOrders = (order, indexOfOrder) => (
     <tr key={indexOfOrder}>
@@ -236,7 +233,7 @@ const AdminAccount = () => {
                   <div className="copy-me">Copy me!</div>
                 </div>
               </CopyToClipboard>
-              
+
               <Chart
                 className="full-height"
                 options={
@@ -272,7 +269,7 @@ const AdminAccount = () => {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   );
 };

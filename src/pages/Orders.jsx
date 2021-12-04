@@ -96,6 +96,7 @@ const Orders = (props) => {
     }
   }
   
+  console.log(orders)
   //set Thumb Status
   function setStatusAll(status) {
     setStatusForSearch(status);

@@ -130,7 +130,6 @@ const EditCategory = () => {
                         </div>
                         
                         <div style={{ marginBottom: "15px" }}>
-                            {console.log(description)}
               <CKEditor
                 activeClass="topnav__textarea"
                 config={ckEditorConfig}

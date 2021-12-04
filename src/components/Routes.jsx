@@ -73,7 +73,7 @@ const Routes = () => {
     const response = await axios.get(
       'https://api.sport-mix.uz/api/categories/read'
     );
-
+    console.log("object")
     if (response.data.message) {
       setCategories([]);
       console.log(response.data.message);
