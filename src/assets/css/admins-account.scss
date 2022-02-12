@@ -188,16 +188,12 @@
         }
     }
 }
-.notPaid{
-    background-color: var(--main-bg-dark);
-    padding: 5px 20px;
-    color: var(--txt-color-dark);
-}
-.paid{
-    background-color: var(--second-bg);
-    padding: 5px 20px;
-    color: var(--txt-color-dark);
-}
+
+// .paid{
+//     background-color: var(--second-color-green);
+//     padding: 5px 20px;
+//     color: var(--txt-white);
+// }
 
 .row-custom{
     width: 100%;

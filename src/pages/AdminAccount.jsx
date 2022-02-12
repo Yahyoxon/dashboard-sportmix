@@ -153,13 +153,13 @@ const AdminAccount = () => {
         {order.status === "куплен" ? (
           order.paid === 0 ? (
             <button
-              className="badge badge-waiting "
+              className="badge badge-danger"
               onClick={() => setPaid(true, order.order_id)}
             >
-              To'landimi?
+              To'lanmagan
             </button>
           ) : (
-            <span className="orderSelect paid">to'langan</span>
+            <span className="badge badge-purchased">To'langan</span>
           )
         ) : (
           <span className="orderSelect notPaid">Kutishda</span>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Admins100k = () => {
   const [adminsData, setAdminsData] = useState([]);
   const [reports, setReports] = useState([]);
+  const [renderHeadIndex, setRenderHeadIndex] = useState();
   const [info, setInfo] = useState([]);
   const customerTableHead = [
     "ФИО",
@@ -62,7 +63,11 @@ const Admins100k = () => {
     setInfo([totalCount, totalCash, totalNotPaid, totalSum]);
   }, [reports]);
 
-  const renderHead = (item, index) => <th key={index}>{item}</th>;
+  const renderHead = (item, index) => (
+    <th key={index} onClick={() => setRenderHeadIndex(item)}>
+      {item}
+    </th>
+  );
 
   const renderBody = (admin, indexOfAdmin) => (
     <tr key={indexOfAdmin}>
@@ -72,6 +77,7 @@ const Admins100k = () => {
       <td>{admin.city}</td>
       <td>{admin.address}</td>
       <td>{admin.oqim_count}</td>
+
       <td>{Number(admin.payment).toLocaleString()}</td>
       <td>
         <img
@@ -89,36 +95,48 @@ const Admins100k = () => {
     </tr>
   );
 
-  const reportData = [
-    { id: 1, title: "Количество проданных товаров", value: info && info[0] },
-    {
-      id: 2,
-      title: "Всего выплачено (so'm)",
-      value: info[1] && info[1].toLocaleString(),
-    },
-    {
-      id: 3,
-      title: "Общая задолженность (so'm)",
-      value: info[2] && info[2].toLocaleString(),
-    },
-    { id: 4, title: "Итого (so'm)", value: info[3] && info[3].toLocaleString() },
-  ];
 
   return (
     <div>
       <div className="row-custom">
-        {reportData.map((item) => {
-          return (
-            <div className="column-custom" key={item.id}>
-              <div className="report-card">
-                <div className="report-card__info">
-                  <h4>{item.value}</h4>
-                  <span>{item.title}</span>
-                </div>
-              </div>
+        <div className="column-custom" >
+          <div className="report-card">
+            <div className="report-card__info">
+              <h4>{info && info[0]}</h4>
+              <span>Количество проданных товаров</span>
             </div>
-          );
-        })}
+          </div>
+        </div>
+        <div className="column-custom">
+          <div className="report-card">
+            <div className="report-card__info">
+              <h4>{info[1] && info[1].toLocaleString()}</h4>
+              <span>Всего выплачено (so'm)</span>
+            </div>
+          </div>
+        </div>
+        <div className="column-custom" >
+          <div
+            className="report-card"
+            style={{
+              background: info[2] !== 0 && "red",
+              color: "#fff",
+            }}
+          >
+            <div className="report-card__info">
+              <h4>{info[2] && info[2].toLocaleString()}</h4>
+              <span>Общая задолженность (so'm)</span>
+            </div>
+          </div>
+        </div>
+        <div className="column-custom" >
+          <div className="report-card">
+            <div className="report-card__info">
+              <h4>{info[3] && info[3].toLocaleString()}</h4>
+              <span>Итого (so'm)</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="tableHeader">
@@ -134,10 +152,11 @@ const Admins100k = () => {
               </div>
               <Table
                 limit="20"
-                headData={customerTableHead}
+                headData={customerTableHead && customerTableHead}
                 renderHead={(item, index) => renderHead(item, index)}
                 bodyData={adminsData}
                 renderBody={(item, index) => renderBody(item, index)}
+                renderHeadIndex={renderHeadIndex && renderHeadIndex}
               />
             </div>
           </div>

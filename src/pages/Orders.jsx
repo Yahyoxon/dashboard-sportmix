@@ -94,10 +94,7 @@ const Orders = (props) => {
       setError("");
       setOrders(response.data.reverse());
     }
-  }
-  
-  console.log(orders)
-  //set Thumb Status
+  }  //set Thumb Status
   function setStatusAll(status) {
     setStatusForSearch(status);
     setActive(status);
