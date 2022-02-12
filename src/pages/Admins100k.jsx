@@ -5,10 +5,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Admins100k = () => {
-  const [adminsData, setAdminsData] = useState([]);
-  const [reports, setReports] = useState([]);
-  const [renderHeadIndex, setRenderHeadIndex] = useState();
-  const [info, setInfo] = useState([]);
+  const [adminsData, setAdminsData] = useState([])
+  const [reports, setReports] = useState([])
+  const [renderHeadIndex, setRenderHeadIndex] = useState()
+  const [info, setInfo] = useState([])
   const customerTableHead = [
     "ФИО",
     "Телефон",
