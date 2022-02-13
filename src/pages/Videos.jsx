@@ -3,8 +3,6 @@ import Table from '../components/table/Table'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-
-
 const Videos = (props) => {
 
     const numFormatter = (num) => {

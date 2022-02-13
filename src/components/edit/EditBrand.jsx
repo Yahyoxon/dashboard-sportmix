@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 
 const EditBrand = () => {
     const { id } = useParams();
-
     const [progress, setProgress] = useState(0);
     const [isUpload, setIsUpload] = useState(false);
     const [BrandName, setBrandName] = useState("")
