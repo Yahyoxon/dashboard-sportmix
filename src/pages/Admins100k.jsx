@@ -39,7 +39,7 @@ const Admins100k = () => {
         const response = await axios.get(
           "https://api.sport-mix.uz/api/order/read"
         );
-        const filtered = response.data.filter((order) => order.oqim !== null);
+        const filtered = response.data.filter((order) => order.oqim !== null && order.status ==="куплен");
         setReports(filtered);
       } catch (error) {
         console.log(error);
@@ -77,8 +77,8 @@ const Admins100k = () => {
       <td>{admin.city}</td>
       <td>{admin.address}</td>
       <td>{admin.oqim_count}</td>
-
       <td>{Number(admin.payment).toLocaleString()}</td>
+      {console.log(admin)}
       <td>
         <img
           className="imgProduct"
@@ -88,7 +88,7 @@ const Admins100k = () => {
         />
       </td>
       <td>
-        <Link to={`/market-admins/${admin.id}`} className="badge badge-waiting">
+        <Link to={`/market-admins/${admin.id}`} className={admin.payment ===0?"badge badge-waiting":"badge badge-danger"}>
           Подробнее
         </Link>
       </td>
