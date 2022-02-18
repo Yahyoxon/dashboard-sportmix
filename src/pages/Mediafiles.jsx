@@ -6,8 +6,12 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import Modal from "react-modal";
 import uploadImg from "../assets/images/photo (1).png";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import {Buffer} from 'buffer';
+global.Buffer = global.Buffer || require("buffer").Buffer;
+
 
 export const Mediafiles = (props) => {
+  Buffer.from('anything','base64');
   const [singleImage, setSingleImage] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
@@ -15,7 +19,6 @@ export const Mediafiles = (props) => {
   const [isAddMediaOpen, setIsAddMediaOpen] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
-
   //config of S3
   const config = {
     bucketName: "sportmix",

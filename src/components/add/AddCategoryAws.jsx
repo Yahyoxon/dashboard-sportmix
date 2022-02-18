@@ -6,6 +6,7 @@ import uploadImg from "../../assets/images/photo (1).png";
 import { useHistory } from "react-router-dom";
 import CKEditor from "react-ckeditor-component";
 import { ckEditorConfig } from "../../ckEditorConfig";
+global.Buffer = global.Buffer || require("buffer").Buffer;
 
 const AddCategory = () => {
   const history = useHistory();

@@ -5,7 +5,7 @@
     width: 300px;
     height: 100vh;
     padding: 20px;
-    z-index: 99;
+    z-index: 9999999;
     background-color: var(--main-bg);
     box-shadow: var(--box-shadow);
     transition: right 0.5s var(--transition-cubic);

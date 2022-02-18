@@ -1,5 +1,5 @@
+import React from "react"
 import { RiCloseCircleLine } from "react-icons/ri";
-
 function Todo({ todos, removeTodo }) {
  
  

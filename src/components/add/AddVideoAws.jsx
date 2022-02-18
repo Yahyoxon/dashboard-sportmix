@@ -4,6 +4,8 @@ import '../../assets/css/products.scss'
 import uploadImg from '../../assets/images/photo (1).png'
 import S3FileUpload from 'react-s3'
 import { useHistory } from "react-router-dom";
+global.Buffer = global.Buffer || require("buffer").Buffer;
+
 
 const AddVideo = () => {
     const history = useHistory();

@@ -6,6 +6,8 @@ import { uploadFile, deleteFile } from "react-s3";
 import CKEditor from "react-ckeditor-component";
 import { ckEditorConfig } from "../../ckEditorConfig";
 import uploadImg from "../../assets/images/photo (1).png";
+global.Buffer = global.Buffer || require("buffer").Buffer;
+
 
 const EditProduct = (props) => {
   const { id } = useParams();
@@ -19,7 +21,7 @@ const EditProduct = (props) => {
   const [brand_name, setBrand_name] = useState("");
   const [installment, setInstallment] = useState("");
   const [images, setImages] = useState([]);
-  
+  const [tgPostLink, setTgPostLink] = useState("");
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
   const [previewImages, setPreviewImages] = useState([]);
@@ -54,9 +56,8 @@ const EditProduct = (props) => {
     { link: "market", name: "Маркет" },
     { link: "none", name: "Скрыть" },
   ];
-
+console.log(tgPostLink)
   const getOldData = async (id) => {
-    console.log(id);
     const response = await axios.get(
       `https://api.sport-mix.uz/api/products/readSingle?id=${id}`
     );
@@ -67,6 +68,7 @@ const EditProduct = (props) => {
     setCategory_name(response.data.category_name);
     setBrand_name(response.data.brand_name);
     setInstallment(response.data.installment);
+    setTgPostLink(response.data.link_for_ads);
     setImages(response.data.images);
     setPreviewImages(response.data.images);
     setSeoTitle(response.data.meta_title);
@@ -137,6 +139,7 @@ const EditProduct = (props) => {
           category_name: category_name,
           brand_name: brand_name,
           installment: installment,
+          link_for_ads: tgPostLink || null,
           images: images,
           meta_title: seoTitle,
           meta_description: seoDescription
@@ -166,6 +169,7 @@ const EditProduct = (props) => {
           cashback: cashback,
           category_name: category_name,
           brand_name: brand_name,
+          link_for_ads: tgPostLink || null,
           installment: installment,
           images: [...images, ...newUrl],
           meta_title: seoTitle,
@@ -264,14 +268,12 @@ const EditProduct = (props) => {
                   if (brand_name === brand.name) {
                     return (
                       <option selected key={o} value={brand.link}>
-                        {" "}
                         {brand.name}
                       </option>
                     );
                   } else {
                     return (
                       <option key={o} value={brand.link}>
-                        {" "}
                         {brand.name}
                       </option>
                     );
@@ -285,14 +287,12 @@ const EditProduct = (props) => {
                   if (installment === ins.link) {
                     return (
                       <option selected key={q} value={ins.link}>
-                        {" "}
                         {ins.name}
                       </option>
                     );
                   } else {
                     return (
                       <option key={q} value={ins.link}>
-                        {" "}
                         {ins.name}
                       </option>
                     );
@@ -300,7 +300,18 @@ const EditProduct = (props) => {
                 })}
               </select>
             </div>
-            
+            <div className="topnav__input col-3-inputs"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <input
+                    type="text"
+                    id="price"
+                    value={tgPostLink}
+                    placeholder="Телеграм ссилка для рекламы"
+                    title="Телеграм ссилка для рекламы"
+                    onChange={(e) => setTgPostLink(e.target.value)}
+                  />
+                </div>
             <h3
               className="seo-headline"
               style={{ marginTop: "25px", color: "rgb(135 135 135)" }}
@@ -422,7 +433,7 @@ const EditProduct = (props) => {
                   type="submit"
                   className="badge badge-primary"
                 >
-                  Добавить
+                  Изменить
                 </button>
               )}
             </div>

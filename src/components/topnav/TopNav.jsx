@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 const Topnav = () => {
   const history = useHistory();
   const [orders, setOrders] = useState([]);
+  const [newOrderCount, setNewOrderCount] = useState(0);
   var adm = "";
   if (localStorage.getItem("admin")) {
     adm = JSON.parse(localStorage.getItem("admin"));
@@ -51,19 +52,23 @@ const Topnav = () => {
   async function getOrdersData() {
     const NewOrders = [];
     let a = 0
+    let count = 0
     const response = await axios.post(
       "https://api.sport-mix.uz/api/order/read"
     );
     if (response.data.message) {
       setOrders([]);
-      console.log(response.data.message);
     } else {
+      // response.data
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].status === "новый") {
+          count++;
+          if(NewOrders.length<5)
           NewOrders[a++] = response.data[i];
         }
       }
       setOrders(NewOrders.reverse());
+      setNewOrderCount(count)
     }
   }
   useEffect(() => {
@@ -108,11 +113,10 @@ const Topnav = () => {
             )}
           />
         </div>
-        {console.log(orders)}
-        <div className="topnav__right-item" style={{ zIndex: 999999 }}>
+        <div className="topnav__right-item" >
           <Dropdown
             icon="bx bx-bell"
-            badge={orders.length}
+            badge={newOrderCount}
             contentData={orders}
             renderItems={(item, index) => renderNotificationItem(item, index)}
             renderFooter={() => orders.length>0?<Link to="/orders">Посмотреть все</Link>:"заказов пока нет"}

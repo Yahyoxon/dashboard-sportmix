@@ -4,6 +4,8 @@ import { storage } from '../../firebase/index';
 import '../../assets/css/products.scss'
 import uploadImg from '../../assets/images/photo (1).png'
 import { useParams } from 'react-router-dom';
+global.Buffer = global.Buffer || require("buffer").Buffer;
+
 
 
 const EditCategory = () => {

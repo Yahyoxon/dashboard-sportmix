@@ -12,6 +12,7 @@ import Todo from "./addProductCharacter/Todo";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import "./addProductCharacter/todo.scss";
+global.Buffer = global.Buffer || require("buffer").Buffer;
 
 const AddProduct = (props) => {
   const history = useHistory();
@@ -148,8 +149,8 @@ const AddProduct = (props) => {
             installment: installment,
             images: urls,
             link_for_ads: tgPostLink || null,
-            characters: characters,
-            video: videoUrl,
+            characters: characters || "d",
+            video: videoUrl || "dsds",
             meta_title: seoTitle || name,
             meta_description: seoDescription || description,
           }

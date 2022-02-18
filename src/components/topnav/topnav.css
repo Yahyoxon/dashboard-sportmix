@@ -130,6 +130,7 @@
 
 .topnav__right-item~.topnav__right-item {
     margin-left: 30px;
+    z-Index: 999999;
 }
 
 .notification-item {

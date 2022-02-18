@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 const Admins100k = () => {
   const [adminsData, setAdminsData] = useState([])
+  const [debtorsData, setDebtorsData] = useState([])
+  const [isDebt, setIsDebt] = useState(false)
   const [reports, setReports] = useState([])
   const [renderHeadIndex, setRenderHeadIndex] = useState()
   const [info, setInfo] = useState([])
@@ -46,7 +48,20 @@ const Admins100k = () => {
       }
     })();
   }, []);
-
+  console.log(reports)
+  // console.log(adminsData)
+const debtorGenerator=()=>{
+ let index = 0
+ const DebtorsList = []
+  for (let i = 0; i < adminsData.length; i++) {
+    if (adminsData[i].payment !== null) {
+      DebtorsList[index++] = adminsData[i];
+    }
+  } 
+  setDebtorsData(DebtorsList)
+  setIsDebt(true)
+}
+console.log(debtorsData)
   useEffect(() => {
     let totalCount = 0;
     let totalSum = 0;
@@ -78,7 +93,6 @@ const Admins100k = () => {
       <td>{admin.address}</td>
       <td>{admin.oqim_count}</td>
       <td>{Number(admin.payment).toLocaleString()}</td>
-      {console.log(admin)}
       <td>
         <img
           className="imgProduct"
@@ -88,7 +102,8 @@ const Admins100k = () => {
         />
       </td>
       <td>
-        <Link to={`/market-admins/${admin.id}`} className={admin.payment ===0?"badge badge-waiting":"badge badge-danger"}>
+        {console.log(admin)}
+        <Link to={`/market-admins/${admin.id}`} className={admin.payment === null?"badge badge-waiting":"badge badge-danger"}>
           Подробнее
         </Link>
       </td>
@@ -123,7 +138,7 @@ const Admins100k = () => {
               color: "#fff",
             }}
           >
-            <div className="report-card__info">
+            <div className="report-card__info" onClick={()=>debtorGenerator()}>
               <h4>{info[2] && info[2].toLocaleString()}</h4>
               <span>Общая задолженность (so'm)</span>
             </div>
@@ -154,7 +169,7 @@ const Admins100k = () => {
                 limit="20"
                 headData={customerTableHead && customerTableHead}
                 renderHead={(item, index) => renderHead(item, index)}
-                bodyData={adminsData}
+                bodyData={isDebt? debtorsData: adminsData}
                 renderBody={(item, index) => renderBody(item, index)}
                 renderHeadIndex={renderHeadIndex && renderHeadIndex}
               />

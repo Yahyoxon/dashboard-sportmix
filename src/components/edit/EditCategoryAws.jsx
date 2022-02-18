@@ -7,6 +7,8 @@ import S3FileUpload from 'react-s3'
 import { useHistory } from "react-router-dom";
 import CKEditor from "react-ckeditor-component";
 import { ckEditorConfig } from "../../ckEditorConfig";
+global.Buffer = global.Buffer || require("buffer").Buffer;
+
 
 const EditCategory = () => {
     const { id } = useParams();
